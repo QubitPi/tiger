@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # https://stackoverflow.com/a/43015007
-CMD ["flask", "--app", "server", "run", "--host", "0.0.0.0"]
+CMD ["flask", "--app", "theresa", "run", "--host", "0.0.0.0"]

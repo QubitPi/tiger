@@ -1,0 +1,33 @@
+[project]
+name = "theresa"
+version = "0.0.1"
+description = "Machine Learning Webservice"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+maintainers = [{name = "Jiaqi Liu", email = "jack20220723@gmail.com"}]
+dependencies = [
+    "flask",
+    "numpy",
+    "opencv-python",
+
+    "pyfftw",
+    "image-similarity-measures"
+]
+
+[project.urls]
+Documentation = "https://flask.palletsprojects.com/tutorial/"
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["theresa", "tests"]
