@@ -3,6 +3,7 @@ import math
 import numpy
 from flask import Flask, request, jsonify
 from theresa.image.similarity import compare_two
+from werkzeug.utils import secure_filename
 
 import spacy
 from flasgger import Swagger
@@ -12,6 +13,12 @@ def create_app():
     app = Flask(__name__)
     swagger = Swagger(app)
     nlp = spacy.load("en_core_web_sm")
+
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    def allowed_file(filename):
+        return '.' in filename and \
+               filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
     @app.route("/sanityCheck")
     def hello():
@@ -42,21 +49,44 @@ def create_app():
 
     @app.route('/image/similarity', methods=['POST'])
     def similarity():
+        """
+        This endpoint returns the image similarity map
+        ---
+        consumes:
+          - multipart/form-data
+        parameters:
+          - in: formData
+            name: image
+            type: file
+            required: true
+          - in: formData
+            name: base image
+            type: file
+            required: true
+        responses:
+          200:
+            description: A similarity map
+        """
+
         if request.method == 'POST':
 
             files = request.files.getlist("file")
 
-            img = cv2.imdecode(numpy.frombuffer(files[0].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
-            base_img = cv2.imdecode(numpy.frombuffer(files[1].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
+            img = files[0]
+            base_img = files[1]
 
-            raw_results = compare_two(img, base_img)
+            if allowed_file(img.filename) and allowed_file(base_img.filename):
+                img = cv2.imdecode(numpy.frombuffer(files[0].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
+                base_img = cv2.imdecode(numpy.frombuffer(files[1].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
 
-            # filter out items with NaN and infinity values
-            results = {k: str(v) for k, v in raw_results.items() if not (math.isinf(v) or math.isnan(v))}
+                raw_results = compare_two(img, base_img)
 
-            app.logger.warning("raw_results=%s", raw_results)
-            app.logger.warning("result=%s", results)
+                # filter out items with NaN and infinity values
+                results = {k: str(v) for k, v in raw_results.items() if not (math.isinf(v) or math.isnan(v))}
 
-            return jsonify(results)
+                app.logger.warning("raw_results=%s", raw_results)
+                app.logger.warning("result=%s", results)
+
+                return jsonify(results)
 
     return app
