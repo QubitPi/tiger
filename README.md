@@ -16,9 +16,12 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
-The [requirement file](./requirements.txt) is
-[generated](https://tecadmin.net/how-to-create-and-run-a-flask-application-using-docker/) (using
-`pip freeze > requirements.txt`) as the result of installing the following dependencies manually
+### How to Add A New Dependency
+
+Either modify the [requirements.txt](./requirements.txt) file directory or the [requirement file](./requirements.txt)
+can be [generated](https://tecadmin.net/how-to-create-and-run-a-flask-application-using-docker/) (using
+`pip freeze > requirements.txt`) as the result of installing the following dependencies manually. For example, in
+add spaCy dependency, we do
 
 ```bash
 # Flask
