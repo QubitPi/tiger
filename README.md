@@ -33,11 +33,13 @@ pip install -U spacy
 python -m spacy download en_core_web_sm
 ```
 
-To run the service locally:
+To run the service locally at port 5000:
 
 ```bash
 flask --app server run
 ```
+
+Swagger API (using [Flasgger](https://github.com/flasgger/flasgger)) is available at http://localhost:5000/apidocs/
 
 Build and Run with Docker
 -------------------------
