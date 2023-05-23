@@ -17,7 +17,7 @@ def create_app():
     def hello():
         return "Success"
 
-    @app.route("/")
+    @app.route("/entityExtraction")
     def named_entity_extraction():
         """
         This endpoint returns the Named Entity Recognition result of a sentence

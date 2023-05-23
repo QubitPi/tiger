@@ -21,7 +21,7 @@ docker run -it -p 5000:5000 -d jack20191124/theresa
 Example browser query:
 
 ```bash
-http://localhost:5000/?sentence="Apple is looking at buying U.K. startup for $1 billion"
+http://localhost:5000/entityExtraction?sentence="Apple is looking at buying U.K. startup for $1 billion"
 ```
 
 Development
