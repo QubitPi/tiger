@@ -45,6 +45,7 @@ py -3 -m venv .venv
 
 ```bash
 python3 -m pip install .
+pip install -r requirements.txt # https://stackoverflow.com/a/75799554
 ```
 
 ### 3. Run Webservice locally
