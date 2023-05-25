@@ -56,11 +56,11 @@ def create_app():
           - multipart/form-data
         parameters:
           - in: formData
-            name: image
+            name: img
             type: file
             required: true
           - in: formData
-            name: base image
+            name: base_img
             type: file
             required: true
         responses:
