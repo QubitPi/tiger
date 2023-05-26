@@ -1,0 +1,62 @@
+---
+name: Theresa CI/CD
+
+on:
+  pull_request:
+    branches:
+    - master
+  push:
+    branches:
+    - master
+
+env:
+  HASHICORP_PRODUCT_VERSION: "latest"
+
+jobs:
+  release:
+    name: Release IAM image to AWS and Deploys instance to EC2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hashicorp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        if: github.ref == 'refs/heads/master'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+
+      - name: Setup HashiCorp Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: ${{ env.HASHICORP_PRODUCT_VERSION }}
+      - name: Initialize Packer configuration
+        run: packer init .
+        working-directory: hashicorp/images
+      - name: Validate Packer template
+        run: packer validate -var "gh_pat_read=${{ secrets.GH_PAT_READ }}" .
+        working-directory: hashicorp/images
+      - name: Build and release AMI image
+        if: github.ref == 'refs/heads/master'
+        run: packer build -var "gh_pat_read=${{ secrets.GH_PAT_READ }}" .
+        working-directory: hashicorp/images
+
+      - name: Setup HashiCorp Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.HASHICORP_PRODUCT_VERSION }}
+      - name: Initialize Terraform configuration
+        run: terraform init
+        working-directory: hashicorp/instances
+      - name: Validate Terraform template
+        run: terraform validate
+        working-directory: hashicorp/instances
+      - name: Create EC2 instance
+        if: github.ref == 'refs/heads/master'
+        run: terraform apply -auto-approve
+        working-directory: hashicorp/instances

@@ -54,3 +54,10 @@ Example browser query:
 ```bash
 http://localhost:5000/?sentence="Apple is looking at buying U.K. startup for $1 billion"
 ```
+
+CI/CD
+-----
+
+- Uses [HashiCorp Packer + Terraform](./hashicorp)
+- Before CI/CD, we still need to **manually cleanup old EC2 instance**, **re-attach EC2 Security Group**, and **update
+  IP backing the `ml.external-brain.paion-data.dev`**
