@@ -60,12 +60,34 @@ CI/CD
 
 - Uses [HashiCorp Packer + Terraform](./hashicorp)
 - Before CI/CD, we still need to **manually cleanup old EC2 instance**, **re-attach EC2 Security Group**, and **update
-  IP backing the `ml.external-brain.paion-data.dev`**
+  IP backing the `machine-learning.externalbrain.app`**
 
 ### (Approach 1) Limitted GitHub Plan
+
+> This approach serves more like a backup in case Jenkins is down
 
 This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
 [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
 usage can be viewed at https://github.com/settings/billing
 
 ### Approach 2 - Jenkins
+
+### Approach 3 - Manual
+
+```bash
+export AWS_ACCESS_KEY_ID="<YOUR_AWS_ACCESS_KEY_ID>"
+export AWS_SECRET_ACCESS_KEY="<YOUR_AWS_SECRET_ACCESS_KEY>"
+export ONETIME_GH_PAT_READ="..."
+
+cd hashicorp/images
+packer init .
+packer validate -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
+packer build -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
+
+cd ../../
+
+cd hashicorp/instances
+terraform init
+terraform validate
+terraform apply -auto-approve
+```
