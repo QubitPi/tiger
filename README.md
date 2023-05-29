@@ -61,3 +61,11 @@ CI/CD
 - Uses [HashiCorp Packer + Terraform](./hashicorp)
 - Before CI/CD, we still need to **manually cleanup old EC2 instance**, **re-attach EC2 Security Group**, and **update
   IP backing the `ml.external-brain.paion-data.dev`**
+
+### (Approach 1) Limitted GitHub Plan
+
+This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
+[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
+usage can be viewed at https://github.com/settings/billing
+
+### Approach 2 - Jenkins
