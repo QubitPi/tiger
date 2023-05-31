@@ -1,58 +1,74 @@
-Machine Learning Webservice <sup>![Python Version Badge is Missing](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)</sup>
-===========================
+Theresa (Machine Learning Webservice) <sup>![Python Version Badge][Python Version Badge]</sup>
+==============================================================================================
 
-A fast [prototyping with Flask](https://flask.palletsprojects.com/en/2.2.x/quickstart/#a-minimal-application)
+**The principle of Theresa is one thing: SIMPLE**. Theresa is deployed as a
+[separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
+request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
+prediction over HTTP to Java-based WS layer**. 
 
-Setup Local Dev Environment
----------------------------
 
-[Install Flask](https://flask.palletsprojects.com/en/2.2.x/installation/):
+Install Theresa
+---------------
 
 ```bash
-git@github.com:QubitPi/machine-learning-webservice.git
-python3 -m venv venv
-. venv/bin/activate
-
-pip install -r requirements.txt
+pip3 install -e .
 ```
 
-### How to Add A New Dependency
 
-Either modify the [requirements.txt](./requirements.txt) file directory or the [requirement file](./requirements.txt)
-can be [generated](https://tecadmin.net/how-to-create-and-run-a-flask-application-using-docker/) (using
-`pip freeze > requirements.txt`) as the result of installing the following dependencies manually. For example, in
-add spaCy dependency, we do
+Development
+-----------
+
+### 1. Create a virtualenv and Activate It
 
 ```bash
-# Flask
-pip install Flask
-
-# spaCy
-pip install -U pip setuptools wheel
-pip install -U spacy
-python -m spacy download en_core_web_sm
+python3 -m venv .venv
+. .venv/bin/activate
 ```
 
-To run the service locally at port 5000:
+Or on Windows cmd::
 
 ```bash
-flask --app server run
+py -3 -m venv .venv
+.venv\Scripts\activate.bat
 ```
 
-Swagger API (using [Flasgger](https://github.com/flasgger/flasgger)) is available at http://localhost:5000/apidocs/
-
-Build and Run with Docker
--------------------------
+### 2. Install Dependencies
 
 ```bash
-docker build -t jack20191124/machine-learning-webservice .
-docker run -it -p 5000:5000 -d jack20191124/machine-learning-webservice
+python3 -m pip install .
 ```
 
-Example browser query:
+### 3. Run Webservice Locally
 
 ```bash
-http://localhost:5000/?sentence="Apple is looking at buying U.K. startup for $1 billion"
+export APP_CONFIG_FILE=/ABSOLUTE/path/to/settings.cfg
+flask --app theresa run --debug
+```
+
+- Note that `APP_CONFIG_FILE` has to be an absolute path
+- Running locally has [debug mode][Flas debug mode] turned on
+- Swagger API (using [Flasgger][Flasgger]) is available at http://localhost:5000/apidocs/
+- The endpoints are available at http://127.0.0.1:5000
+
+  Example browser query:
+
+  ```bash
+  http://localhost:5000/entityExtraction?sentence="Apple is looking at buying U.K. startup for $1 billion"
+  ```
+
+### 4. Test
+
+```bash
+pip3 install '.[test]'
+pytest
+```
+
+Run with coverage report:
+
+```bash
+coverage run -m pytest
+coverage report
+coverage html  # open htmlcov/index.html in a browser
 ```
 
 CI/CD
@@ -89,3 +105,8 @@ terraform init
 terraform validate
 terraform apply -auto-approve
 ```
+
+[Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
+[Flasgger]: https://github.com/flasgger/flasgger
+
+[Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white

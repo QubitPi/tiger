@@ -1,7 +1,21 @@
+.DS_Store
 venv/
-.idea/
+.venv/
+*.pyc
 __pycache__/
+instance/
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.idea/
+*.swp
+*~
 
+# HashiCorp
 .terraform/
 terraform.tfstate
 .terraform.lock.hcl
