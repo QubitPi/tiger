@@ -54,3 +54,38 @@ Example browser query:
 ```bash
 http://localhost:5000/?sentence="Apple is looking at buying U.K. startup for $1 billion"
 ```
+
+CI/CD
+-----
+
+- Uses [HashiCorp Packer + Terraform](./hashicorp)
+- Before CI/CD, we still need to **manually cleanup old EC2 instance**, **re-attach EC2 Security Group**, and **update
+  IP backing the `machine-learning.externalbrain.app`**
+
+This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
+[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
+usage can be viewed at https://github.com/settings/billing
+
+Currently, this is a one-developer project. With this constraint, the
+[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) is equivalent to a script given that this developer
+proactively bind to standard practice:
+
+### Deploy Script
+
+```bash
+export AWS_ACCESS_KEY_ID="<YOUR_AWS_ACCESS_KEY_ID>"
+export AWS_SECRET_ACCESS_KEY="<YOUR_AWS_SECRET_ACCESS_KEY>"
+export ONETIME_GH_PAT_READ="..."
+
+cd hashicorp/images
+packer init .
+packer validate -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
+packer build -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
+
+cd ../../
+
+cd hashicorp/instances
+terraform init
+terraform validate
+terraform apply -auto-approve
+```

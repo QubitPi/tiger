@@ -8,7 +8,7 @@ app = Flask(__name__)
 swagger = Swagger(app)
 nlp = spacy.load("en_core_web_sm")
 
-@app.route("/")
+@app.route("/entityExtraction")
 def named_entity_extraction():
     """
     This endpoint returns the Named Entity Recognition result of a sentence
