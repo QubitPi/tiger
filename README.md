@@ -4,16 +4,7 @@ Theresa (Machine Learning Webservice) <sup>![Python Version Badge][Python Versio
 **The principle of Theresa is one thing: SIMPLE**. Theresa is deployed as a
 [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
 request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
-prediction over HTTP to Java-based WS layer**. 
-
-
-Install Theresa
----------------
-
-```bash
-pip3 install -e .
-```
-
+prediction over HTTP to Java-based WS layer**.
 
 Development
 -----------
@@ -45,12 +36,13 @@ export APP_CONFIG_FILE=/ABSOLUTE/path/to/settings.cfg
 flask --app theresa run --debug
 ```
 
-- Note that `APP_CONFIG_FILE` has to be an absolute path
+- Note that `APP_CONFIG_FILE` has to be an _absolute_ path. It has
+
+  - [X_RAPIDAPI_KEY_MICROSOFT_ENTITY_EXTRACTION](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1/)
+
 - Running locally has [debug mode][Flas debug mode] turned on
 - Swagger API (using [Flasgger][Flasgger]) is available at http://localhost:5000/apidocs/
-- The endpoints are available at http://127.0.0.1:5000
-
-  Example browser query:
+- The endpoints are available at http://127.0.0.1:5000 Example browser query:
 
   ```bash
   http://localhost:5000/entityExtraction?sentence="Apple is looking at buying U.K. startup for $1 billion"
@@ -60,6 +52,7 @@ flask --app theresa run --debug
 
 ```bash
 pip3 install '.[test]'
+export APP_CONFIG_FILE=./tests/settings.test.cfg
 pytest
 ```
 
@@ -82,29 +75,6 @@ This is a private repo on GitHub, which offers only 2000 min GitHub Action minut
 [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
 usage can be viewed at https://github.com/settings/billing
 
-Currently, this is a one-developer project. With this constraint, the
-[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) is equivalent to a script given that this developer
-proactively bind to standard practice:
-
-### Deploy Script
-
-```bash
-export AWS_ACCESS_KEY_ID="<YOUR_AWS_ACCESS_KEY_ID>"
-export AWS_SECRET_ACCESS_KEY="<YOUR_AWS_SECRET_ACCESS_KEY>"
-export ONETIME_GH_PAT_READ="..."
-
-cd hashicorp/images
-packer init .
-packer validate -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
-packer build -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
-
-cd ../../
-
-cd hashicorp/instances
-terraform init
-terraform validate
-terraform apply -auto-approve
-```
 
 [Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
 [Flasgger]: https://github.com/flasgger/flasgger

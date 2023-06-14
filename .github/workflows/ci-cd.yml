@@ -32,6 +32,7 @@ jobs:
         run: pip3 install '.[test]'
       - name: Run all tests
         run: |
+          # "exported" env variables do NOT persist across action steps.
           export APP_CONFIG_FILE=${{ github.workspace }}/tests/settings.test.cfg
           pytest
 

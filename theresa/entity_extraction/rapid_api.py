@@ -5,6 +5,8 @@ from flask import current_app # https://stackoverflow.com/a/32017603
 
 def transform_to_knowledge_graph_spec(data):
     """
+    Transform the return value of "entity_extraction()" into standard knowledge graph JSON structure
+    (https://qubitpi.github.io/knowledge-graph-spec/draft/#sec-Data-Structure)
 
     The data to be transformed must have the following structure (extra JSON fields are OK but they won't be used)::
 
@@ -37,8 +39,9 @@ def transform_to_knowledge_graph_spec(data):
     i.e. it's a list of entities grouped by a sentence
 
 
-    :param data:
-    :return:
+    :param data:  The return value of "entity_extraction()"
+
+    :return: a JSON object
     """
     nodes = []
 
@@ -59,11 +62,37 @@ def transform_to_knowledge_graph_spec(data):
 
 def entity_extraction(sentences: list[str], language: str = "zh"):
     """
+    Batch-extracts entities from a list of sentences
 
-    :param sentences:
+    :param sentences:  A list of strings
     :param language:  The language code defined in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes. Defaults to
     "zh" (Chinese)
-    :return:
+
+    :return: a list of JSON objects, each of which follows this example structure::
+
+        {
+            "id":"1",
+            "entities":[
+                {
+                    "text":"trip",
+                    "category":"Event",
+                    "offset":18,
+                    "length":4,
+                    "confidenceScore":0.74
+                },
+                {
+                    "text":"Seattle",
+                    "category":"Location",
+                    "subcategory":"GPE",
+                    "offset":26,
+                    "length":7,
+                    "confidenceScore":1
+                }
+            ],
+            "warnings":[
+
+            ]
+        }
     """
     id_counter: int = 0
     microsoft_max_payload_size = 5
@@ -140,8 +169,8 @@ def fire_request(payload) -> Response:
     }
 
 
-    :param payload:
-    :return:
+    :param payload:  The Microsoft endpoint payload
+    :return: a Rapid API response
     """
     url = "https://microsoft-text-analytics1.p.rapidapi.com/entities/recognition/general"
     headers = {
