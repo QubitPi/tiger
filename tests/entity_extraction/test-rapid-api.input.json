@@ -1,0 +1,22 @@
+[
+    {
+        "entities": [
+            {
+                "text": "trip",
+                "category": "Event"
+            },
+            {
+                "text": "Seattle",
+                "category": "Location"
+            }
+        ]
+    },
+    {
+        "entities": [
+            {
+                "text": "China",
+                "category": "Country"
+            }
+        ]
+    }
+]

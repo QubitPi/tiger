@@ -1,0 +1,25 @@
+{
+    "nodes": [
+        {
+            "fields": {
+                "label":"trip",
+                "type":"Event"
+            },
+            "id":"trip"
+        },
+        {
+            "fields": {
+                "label":"Seattle",
+                "type":"Location"
+            },
+            "id": "Seattle"
+        },
+        {
+            "fields": {
+                "label":"China",
+                "type":"Country"
+            },
+            "id":"China"
+        }
+    ]
+}

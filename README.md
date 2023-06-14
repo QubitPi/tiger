@@ -1,58 +1,67 @@
-Machine Learning Webservice <sup>![Python Version Badge is Missing](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)</sup>
-===========================
+Theresa (Machine Learning Webservice) <sup>![Python Version Badge][Python Version Badge]</sup>
+==============================================================================================
 
-A fast [prototyping with Flask](https://flask.palletsprojects.com/en/2.2.x/quickstart/#a-minimal-application)
+**The principle of Theresa is one thing: SIMPLE**. Theresa is deployed as a
+[separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
+request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
+prediction over HTTP to Java-based WS layer**.
 
-Setup Local Dev Environment
----------------------------
+Development
+-----------
 
-[Install Flask](https://flask.palletsprojects.com/en/2.2.x/installation/):
+### 1. Create a virtualenv and Activate It
 
 ```bash
-git@github.com:QubitPi/machine-learning-webservice.git
-python3 -m venv venv
-. venv/bin/activate
-
-pip install -r requirements.txt
+python3 -m venv .venv
+. .venv/bin/activate
 ```
 
-### How to Add A New Dependency
-
-Either modify the [requirements.txt](./requirements.txt) file directory or the [requirement file](./requirements.txt)
-can be [generated](https://tecadmin.net/how-to-create-and-run-a-flask-application-using-docker/) (using
-`pip freeze > requirements.txt`) as the result of installing the following dependencies manually. For example, in
-add spaCy dependency, we do
+Or on Windows cmd::
 
 ```bash
-# Flask
-pip install Flask
-
-# spaCy
-pip install -U pip setuptools wheel
-pip install -U spacy
-python -m spacy download en_core_web_sm
+py -3 -m venv .venv
+.venv\Scripts\activate.bat
 ```
 
-To run the service locally at port 5000:
+### 2. Install Dependencies
 
 ```bash
-flask --app server run
+python3 -m pip install .
 ```
 
-Swagger API (using [Flasgger](https://github.com/flasgger/flasgger)) is available at http://localhost:5000/apidocs/
-
-Build and Run with Docker
--------------------------
+### 3. Run Webservice Locally
 
 ```bash
-docker build -t jack20191124/machine-learning-webservice .
-docker run -it -p 5000:5000 -d jack20191124/machine-learning-webservice
+export APP_CONFIG_FILE=/ABSOLUTE/path/to/settings.cfg
+flask --app theresa run --debug
 ```
 
-Example browser query:
+- Note that `APP_CONFIG_FILE` has to be an _absolute_ path. It has
+
+  - [X_RAPIDAPI_KEY_MICROSOFT_ENTITY_EXTRACTION](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1/)
+
+- Running locally has [debug mode][Flas debug mode] turned on
+- Swagger API (using [Flasgger][Flasgger]) is available at http://localhost:5000/apidocs/
+- The endpoints are available at http://127.0.0.1:5000 Example browser query:
+
+  ```bash
+  http://localhost:5000/entityExtraction?sentence="Apple is looking at buying U.K. startup for $1 billion"
+  ```
+
+### 4. Test
 
 ```bash
-http://localhost:5000/?sentence="Apple is looking at buying U.K. startup for $1 billion"
+pip3 install '.[test]'
+export APP_CONFIG_FILE=./tests/settings.test.cfg
+pytest
+```
+
+Run with coverage report:
+
+```bash
+coverage run -m pytest
+coverage report
+coverage html  # open htmlcov/index.html in a browser
 ```
 
 CI/CD
@@ -66,26 +75,8 @@ This is a private repo on GitHub, which offers only 2000 min GitHub Action minut
 [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
 usage can be viewed at https://github.com/settings/billing
 
-Currently, this is a one-developer project. With this constraint, the
-[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) is equivalent to a script given that this developer
-proactively bind to standard practice:
 
-### Deploy Script
+[Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
+[Flasgger]: https://github.com/flasgger/flasgger
 
-```bash
-export AWS_ACCESS_KEY_ID="<YOUR_AWS_ACCESS_KEY_ID>"
-export AWS_SECRET_ACCESS_KEY="<YOUR_AWS_SECRET_ACCESS_KEY>"
-export ONETIME_GH_PAT_READ="..."
-
-cd hashicorp/images
-packer init .
-packer validate -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
-packer build -var "gh_pat_read=$ONETIME_GH_PAT_READ" .
-
-cd ../../
-
-cd hashicorp/instances
-terraform init
-terraform validate
-terraform apply -auto-approve
-```
+[Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white
