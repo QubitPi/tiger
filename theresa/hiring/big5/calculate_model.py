@@ -1,12 +1,12 @@
 import csv
 
 QUESTIONS: list[str] = [
-        "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10",
-        "N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10",
-        "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
-        "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-        "O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8",	"O9", "O10"
-    ]
+    "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10",
+    "N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
+    "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
+    "O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8",	"O9", "O10"
+]
 
 
 def predict_answer_vector(answer_map: dict[str, int]) -> list[int]:
@@ -17,6 +17,16 @@ def predict_answer_vector(answer_map: dict[str, int]) -> list[int]:
     The prediction first finds the top 10 most similar answers from data.csv records. The for each of the 50 questions,
     compute the most frequent answers for each question in this 10 records. The most frequent answer will be the
     predicted answer for that particular question.
+
+    Example usage::
+
+        predict_answer_vector({
+            "E1": 1,
+            "N1": 2,
+            "A1": 3,
+            "C1": 4,
+            "O1": 5
+        })
 
     :param answer_map:  The provided partially answered question. The map key is the question tag (E1 ~ O10) and value
     is the answer choice (1 ~ 5) for that question. This map only contains 5 kv pairs
@@ -105,13 +115,3 @@ def _extract_answers_by_question(question: str, most_similar_records: list[dict[
     :return: a list of numbers each of which represents a choice of a particular column in data.csv
     """
     return [record[question] for record in most_similar_records]
-
-
-if __name__ == "__main__":
-    print(predict_answer_vector({
-        "E1": 1,
-        "N1": 2,
-        "A1": 3,
-        "C1": 4,
-        "O1": 5
-    }))
