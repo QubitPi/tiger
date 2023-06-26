@@ -60,6 +60,7 @@ def transform_to_knowledge_graph_spec(data):
         "nodes": nodes
     }
 
+
 def entity_extraction(sentences: list[str], language: str = "zh"):
     """
     Batch-extracts entities from a list of sentences

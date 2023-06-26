@@ -1,3 +1,8 @@
+variable "app_config_file_abs_path" {
+  type = string
+  sensitive = true
+}
+
 terraform {
   required_providers {
     aws = {
@@ -35,6 +40,12 @@ resource "aws_instance" "theresa" {
   user_data = <<-EOF
     #!/bin/bash
     cd /home/ubuntu/theresa
-    flask --app server run --host=0.0.0.0
+
+    python3 -m venv .venv
+    . .venv/bin/activate
+    python3 -m pip install .
+    export APP_CONFIG_FILE=var.app_config_file_abs_path
+
+    flask --app theresa run --host=0.0.0.0
   EOF
 }

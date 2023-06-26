@@ -32,6 +32,13 @@ build {
     "source.amazon-ebs.theresa"
   ]
 
+  # Load Flas config file into AMI image
+  # path is "/home/ubuntu/settings.cfg"
+  provisioner "file" {
+    source = "settings.cfg"
+    destination = "/home/ubuntu"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "GH_PAT_READ=${var.gh_pat_read}"
