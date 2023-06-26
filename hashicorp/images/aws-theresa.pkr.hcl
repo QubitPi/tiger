@@ -12,7 +12,7 @@ source "amazon-ebs" "theresa" {
   force_deregister = "true"
   force_delete_snapshot = "true"
 
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   region = "${var.aws_image_region}"
   source_ami_filter {
     filters = {
@@ -36,7 +36,7 @@ build {
   # path is "/home/ubuntu/settings.cfg"
   provisioner "file" {
     source = "settings.cfg"
-    destination = "/home/ubuntu"
+    destination = "/home/ubuntu/settings.cfg"
   }
 
   provisioner "shell" {
