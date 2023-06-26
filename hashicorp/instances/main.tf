@@ -1,3 +1,8 @@
+variable "aws_deploy_region" {
+  type = string
+  description = "The EC2 region"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -9,7 +14,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-west-1"
+  region = var.aws_deploy_region
 }
 
 data "aws_ami" "latest-theresa" {
@@ -35,6 +40,12 @@ resource "aws_instance" "theresa" {
   user_data = <<-EOF
     #!/bin/bash
     cd /home/ubuntu/theresa
-    flask --app server run --host=0.0.0.0
+
+    python3 -m venv .venv
+    . .venv/bin/activate
+    python3 -m pip install .
+    export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
+
+    flask --app theresa run --host=0.0.0.0
   EOF
 }

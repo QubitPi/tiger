@@ -13,7 +13,7 @@ source "amazon-ebs" "theresa" {
   force_delete_snapshot = "true"
 
   instance_type = "t2.micro"
-  region = "us-west-1"
+  region = "${var.aws_image_region}"
   source_ami_filter {
     filters = {
       name = "ubuntu/images/*ubuntu-*-20.04-amd64-server-*"
@@ -31,6 +31,13 @@ build {
   sources = [
     "source.amazon-ebs.theresa"
   ]
+
+  # Load Flas config file into AMI image
+  # path is "/home/ubuntu/settings.cfg"
+  provisioner "file" {
+    source = "settings.cfg"
+    destination = "/home/ubuntu"
+  }
 
   provisioner "shell" {
     environment_vars = [
