@@ -34,16 +34,21 @@ data "aws_ami" "latest-theresa" {
 
 resource "aws_instance" "theresa" {
   ami = "${data.aws_ami.latest-theresa.id}"
-  instance_type = "t2.micro"
-  key_name = "testKey"
+  instance_type = "t2.small"
+  tags = {
+    Name = "Theresa"
+  }
 
   user_data = <<-EOF
     #!/bin/bash
     cd /home/ubuntu/theresa
 
-    python3 -m venv .venv
+    alias python=python3.10
+    alias python3=python3.10
+
+    python3.10 -m venv .venv
     . .venv/bin/activate
-    python3 -m pip install .
+    python3.10 -m pip install .
     export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
 
     flask --app theresa run --host=0.0.0.0
