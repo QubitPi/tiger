@@ -1,3 +1,8 @@
+variable "aws_deploy_region" {
+  type = string
+  description = "The EC2 region"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -9,7 +14,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-west-1"
+  region = var.aws_deploy_region
 }
 
 data "aws_ami" "latest-theresa" {
