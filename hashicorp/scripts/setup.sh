@@ -24,6 +24,14 @@ alias python3=python3.10
 # Failing command: ['/home/ubuntu/theresa/.venv/bin/python3', '-Im', 'ensurepip', '--upgrade', '--default-pip']
 sudo apt install python3.8-venv -y
 
+# Install Nginx and load SSL config
+sudo apt install -y nginx
+sudo mv /home/ubuntu/nginx-ssl.conf /etc/nginx/sites-enabled/default
+sudo mv /home/ubuntu/server.crt /etc/ssl/certs/server.crt
+sudo mv /home/ubuntu/server.key /etc/ssl/private/server.key
+
+# Load SSL certificate
+
 git clone https://$GH_PAT_READ@github.com/QubitPi/theresa.git
 cd /home/ubuntu/theresa
 sudo pip3 install flask flasgger

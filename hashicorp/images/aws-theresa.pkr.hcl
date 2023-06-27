@@ -32,11 +32,26 @@ build {
     "source.amazon-ebs.theresa"
   ]
 
-  # Load Flas config file into AMI image
-  # path is "/home/ubuntu/settings.cfg"
+  # Load Flask config file into AMI image
   provisioner "file" {
     source = "settings.cfg"
     destination = "/home/ubuntu/settings.cfg"
+  }
+
+  # Load SSL Certificates
+  provisioner "file" {
+    source = "./server.crt"
+    destination = "/home/ubuntu/server.crt"
+  }
+  provisioner "file" {
+    source = "./server.key"
+    destination = "/home/ubuntu/server.key"
+  }
+
+  # Load Nginx config file into AMI image
+  provisioner "file" {
+    source = "./nginx-ssl.conf"
+    destination = "/home/ubuntu/nginx-ssl.conf"
   }
 
   provisioner "shell" {
