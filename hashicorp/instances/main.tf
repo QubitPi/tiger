@@ -38,6 +38,7 @@ resource "aws_instance" "theresa" {
   tags = {
     Name = "Theresa"
   }
+  security_groups = ["Paion Data Theresa"]
 
   user_data = <<-EOF
     #!/bin/bash
@@ -51,6 +52,18 @@ resource "aws_instance" "theresa" {
     python3.10 -m pip install .
     export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
 
+    sudo nginx -t
+    sudo nginx -s reload
+
     flask --app theresa run --host=0.0.0.0
   EOF
+}
+
+resource "aws_route53_record" "machine-learning-paion-data-com" {
+  zone_id         = "Z041761836EZCKFO9AWXN"
+  name            = "machine-learning.paion-data.com"
+  type            = "A"
+  ttl             = 300
+  records         = [aws_instance.theresa.public_ip]
+  allow_overwrite = true
 }
