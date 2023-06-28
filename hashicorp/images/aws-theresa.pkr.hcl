@@ -38,7 +38,7 @@ build {
     destination = "/home/ubuntu/settings.cfg"
   }
 
-  # Load SSL Certificates
+  # Load SSL Certificates into AMI image
   provisioner "file" {
     source = "./server.crt"
     destination = "/home/ubuntu/server.crt"

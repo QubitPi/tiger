@@ -56,7 +56,7 @@ jobs:
       - name: Load SSL Certificates
         working-directory: hashicorp/images
         run: |
-          echo '${{ secrets.SSH_CERTIFICATE }}' > server.crt
+          echo '${{ secrets.SSL_CERTIFICATE }}' > server.crt
           echo '${{ secrets.SSL_CERTIFICATE_KEY }}' > server.key
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
