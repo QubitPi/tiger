@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flasgger import Swagger
 from flask import Flask, request, jsonify
 from theresa.entity_extraction.rapid_api import entity_extraction
@@ -6,6 +7,7 @@ from theresa.entity_extraction.rapid_api import transform_to_knowledge_graph_spe
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config.from_envvar("APP_CONFIG_FILE")
 
     swagger = Swagger(app)
