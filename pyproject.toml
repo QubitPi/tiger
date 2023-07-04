@@ -7,7 +7,8 @@ maintainers = [{name = "Jiaqi Liu", email = "jack20220723@gmail.com"}]
 dependencies = [
     "flask",
     "flasgger == 0.9.7b2",
-    "requests"
+    "requests",
+    "flask-cors"
 ]
 
 [tool.setuptools.packages.find]
