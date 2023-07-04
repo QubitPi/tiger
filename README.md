@@ -67,9 +67,8 @@ coverage html  # open htmlcov/index.html in a browser
 CI/CD
 -----
 
-- Uses [HashiCorp Packer + Terraform](./hashicorp)
-- Before CI/CD, we still need to **manually cleanup old EC2 instance**, **re-attach EC2 Security Group**, and **update
-  IP backing the `machine-learning.externalbrain.app`**
+- Uses [HashiCorp Packer + Terraform](./hashicorp) which also automates SSL config
+- Before CI/CD, we still need to **manually cleanup old EC2 instance**
 
 This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
 [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
