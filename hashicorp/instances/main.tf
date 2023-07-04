@@ -49,7 +49,7 @@ data "aws_ami" "latest-theresa-prod" {
 
 resource "aws_instance" "theresa-dev" {
   ami = "${data.aws_ami.latest-theresa-dev.id}"
-  instance_type = "t2.small"
+  instance_type = "t2.micro"
   tags = {
     Name = "Paion Data Theresa (Dev)"
   }
