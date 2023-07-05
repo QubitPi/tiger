@@ -7,42 +7,28 @@ from theresa.entity_extraction.rapid_api import transform_to_knowledge_graph_spe
 
 
 def get_queries(node) -> list[str]:
-    return [node["fields"]["name"].replace(" ", "+")]
+    """
+    Tokenizing a node fields.
+
+    Each field will fire a Google Knowledge Graph API
+
+    :param node:  An object representing a Knowledge Graph Spec node
+
+    :return: a list of Google Knowledge Graph API search queries
+    """
+    queries = []
+    for field_name, field_value in node["fields"].items():
+        queries.append(field_value.replace(" ", "+"))
+    return queries
 
 
 def node_expand(node: object):
     """
-    Batch-extracts entities from a list of sentences
+    Expands a given node.
 
-    :param sentences:  A list of strings
-    :param language:  The language code defined in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes. Defaults to
-    "zh" (Chinese)
+    :param node:  An object representing a Knowledge Graph Spec node
 
-    :return: a list of JSON objects, each of which follows this example structure::
-
-        {
-            "id":"1",
-            "entities":[
-                {
-                    "text":"trip",
-                    "category":"Event",
-                    "offset":18,
-                    "length":4,
-                    "confidenceScore":0.74
-                },
-                {
-                    "text":"Seattle",
-                    "category":"Location",
-                    "subcategory":"GPE",
-                    "offset":26,
-                    "length":7,
-                    "confidenceScore":1
-                }
-            ],
-            "warnings":[
-
-            ]
-        }
+    :return: a Knowledge Graph Spec graph what guarantees to contain the node being expanded
     """
 
     queries = get_queries(node)
@@ -90,47 +76,9 @@ def fire_request(query: str) -> Response:
     """
     Sends expand request to Google Knowledge Graph API.
 
-    The response.json() has the following JSON structure::
+    :param query:  The search term
 
-    {
-        "documents":[
-            {
-                "id":"1",
-                "entities":[
-                    {
-                        "text":"trip",
-                        "category":"Event",
-                        "offset":18,
-                        "length":4,
-                        "confidenceScore":0.74
-                    },
-                    {
-                        "text":"Seattle",
-                        "category":"Location",
-                        "subcategory":"GPE",
-                        "offset":26,
-                        "length":7,
-                        "confidenceScore":1
-                    }
-                ],
-                "warnings":[
-
-                ]
-            },
-            {
-                "id":"2",
-                ...
-            },
-        ],
-        "errors":[
-
-        ],
-        "modelVersion":"2021-06-01"
-    }
-
-
-    :param payload:  The Microsoft endpoint payload
-    :return: a Rapid API response
+    :return: a Google Knowledge Graph API response object
     """
     QUERY_TEMPLATE = "https://kgsearch.googleapis.com/v1/entities:search?query={query}&key={api_key}&limit=1&indent=True"
     url = QUERY_TEMPLATE.format(query=query, api_key=current_app.config['GOOGLE_KNOWLEDGE_GRAPH_API_KEY'])
