@@ -21,10 +21,11 @@ def create_app():
     @app.route("/entityExtraction")
     def named_entity_extraction():
         """
-        This endpoint returns the Named Entity Recognition result of a sentence
+        对一段文字进行知识抽取分析
         ---
         parameters:
           - name: sentence
+            description: 被分析的文字，可以是一个句子，也可以是一段话，内容格式和长度不限
             in: query
             type: string
             required: true
