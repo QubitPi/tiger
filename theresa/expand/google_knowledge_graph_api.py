@@ -5,6 +5,11 @@ from flask import current_app # https://stackoverflow.com/a/32017603
 from theresa.entity_extraction.rapid_api import entity_extraction
 from theresa.entity_extraction.rapid_api import transform_to_knowledge_graph_spec
 
+
+def get_queries(node) -> list[str]:
+    return [node["fields"]["name"].replace(" ", "+")]
+
+
 def node_expand(node: object):
     """
     Batch-extracts entities from a list of sentences
@@ -40,27 +45,44 @@ def node_expand(node: object):
         }
     """
 
-    query = node["fields"]["name"].replace(" ", "+")
+    queries = get_queries(node)
 
-    response_body = fire_request(query).json()
+    nodes = []
+    for query in queries:
+        response_body = fire_request(query).json()
 
-    if response_body["itemListElement"]:
-        if response_body["itemListElement"][0]:
-            if response_body["itemListElement"][0]["result"]:
-                if response_body["itemListElement"][0]["result"]["detailedDescription"]:
-                    if response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]:
-                        # return response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]
-                        return transform_to_knowledge_graph_spec(
-                            entity_extraction(
-                                [
-                                    response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]
-                                ]
+        if response_body["itemListElement"]:
+            if response_body["itemListElement"][0]:
+                if response_body["itemListElement"][0]["result"]:
+                    if response_body["itemListElement"][0]["result"]["detailedDescription"]:
+                        if response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]:
+                            nodes.extend(
+                                transform_to_knowledge_graph_spec(
+                                    entity_extraction(
+                                        [
+                                            response_body["itemListElement"][0]["result"]["detailedDescription"][
+                                                "articleBody"]
+                                        ]
+                                    )
+                                )["nodes"]
                             )
-                        )
+
+    for expanded_node in nodes:
+        if node["id"] == expanded_node["id"]:
+            nodes.remove(expanded_node)
+
+    links = []
+    for expanded_node in nodes:
+        links.append({
+            "source": node["id"],
+            "target": expanded_node["id"]
+        })
+
+    nodes.append(node)
 
     return {
-        "nodes": [],
-        "relationships": []
+        "nodes": nodes,
+        "links": links
     }
 
 
