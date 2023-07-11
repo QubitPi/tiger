@@ -36,7 +36,7 @@ def transform_to_knowledge_graph_spec(data):
         ...
     ]
 
-    i.e. it's a list of entities grouped by a sentence
+    i.e. it's a list of entities grouped by a sentence or a list of documents
 
 
     :param data:  The return value of "entity_extraction()"
@@ -61,15 +61,36 @@ def transform_to_knowledge_graph_spec(data):
     }
 
 
-def entity_extraction(sentences: list[str], language: str = "zh"):
+def deduplicate_entities(documents: list):
+    unique_texts = set()
+
+    for document in documents:
+        unique_entities = []
+        for entity in document["entities"]:
+            if entity["text"] not in unique_texts:
+                unique_texts.add(entity["text"])
+                unique_entities.append(entity)
+        document["entities"] = unique_entities
+
+    return documents
+
+
+def entity_extraction(sentences: list[str]):
+    documents = []
+    for language in ["zh", "en"]:
+        documents.extend(entity_extraction_by_language(sentences, language))
+
+    return deduplicate_entities(documents)
+
+
+def entity_extraction_by_language(sentences: list[str], language: str):
     """
     Batch-extracts entities from a list of sentences
 
     :param sentences:  A list of strings
-    :param language:  The language code defined in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes. Defaults to
-    "zh" (Chinese)
+    :param language:  The language code defined in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes.
 
-    :return: a list of JSON objects, each of which follows this example structure::
+    :return: a list of JSON objects, called "documents", each of which follows this example structure::
 
         {
             "id":"1",
