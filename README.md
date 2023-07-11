@@ -6,6 +6,14 @@ Theresa (Machine Learning Webservice) <sup>![Python Version Badge][Python Versio
 request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
 prediction over HTTP to Java-based WS layer**.
 
+Entity Extraction
+-----------------
+
+### GraphGPT
+
+- [GitHub](https://github.com/varunshenoy/GraphGPT)
+- [YouTube](https://www.youtube.com/watch?v=mYCIRcobukI&t=1s)
+
 Development
 -----------
 
