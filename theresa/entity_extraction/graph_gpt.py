@@ -155,4 +155,4 @@ def entity_extraction(sentences: list[str]):
 
 
 if __name__ == '__main__':
-    entity_extraction(["Bob's roommate is Tom"])
+    pass
