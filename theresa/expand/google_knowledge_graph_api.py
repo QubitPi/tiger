@@ -2,8 +2,7 @@ import requests
 from requests import Response
 from flask import current_app # https://stackoverflow.com/a/32017603
 
-from theresa.entity_extraction.rapid_api import entity_extraction
-from theresa.entity_extraction.rapid_api import transform_to_knowledge_graph_spec
+from theresa.entity_extraction.graph_gpt import entity_extraction
 
 
 def get_queries(node) -> list[str]:
@@ -34,6 +33,7 @@ def node_expand(node: object):
     queries = get_queries(node)
 
     nodes = []
+    links = []
     for query in queries:
         response_body = fire_request(query).json()
 
@@ -42,22 +42,20 @@ def node_expand(node: object):
                 if response_body["itemListElement"][0]["result"]:
                     if response_body["itemListElement"][0]["result"]["detailedDescription"]:
                         if response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]:
-                            nodes.extend(
-                                transform_to_knowledge_graph_spec(
-                                    entity_extraction(
+                            expanded_graph = entity_extraction(
                                         [
                                             response_body["itemListElement"][0]["result"]["detailedDescription"][
                                                 "articleBody"]
                                         ]
                                     )
-                                )["nodes"]
-                            )
+
+                            nodes.extend(expanded_graph["nodes"])
+                            links.extend(expanded_graph["links"])
 
     for expanded_node in nodes:
         if node["id"] == expanded_node["id"]:
             nodes.remove(expanded_node)
 
-    links = []
     for expanded_node in nodes:
         links.append({
             "source": node["id"],
