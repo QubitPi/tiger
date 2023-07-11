@@ -53,6 +53,7 @@ jobs:
           sed -i -e 's/GH_PAT_READ_INJECTED_BY_CI_CD/${{ secrets.GH_PAT_READ }}/g' theresa.auto.pkrvars.hcl
           sed -i -e 's/X_RAPIDAPI_KEY_MICROSOFT_ENTITY_EXTRACTION_INJECTED_BY_CI_CD/${{ secrets.X_RAPIDAPI_KEY_MICROSOFT_ENTITY_EXTRACTION }}/g' settings.cfg
           sed -i -e 's/GOOGLE_KNOWLEDGE_GRAPH_API_KEY_INJECTED_BY_CI_CD/${{ secrets.GOOGLE_KNOWLEDGE_GRAPH_API_KEY }}/g' settings.cfg
+          sed -i -e 's/OPEN_AI_API_KEY_INJECTED_BY_CI_CD/${{ secrets.OPEN_AI_API_KEY }}/g' settings.cfg
 
       - name: Load SSL Certificates
         working-directory: hashicorp/images
