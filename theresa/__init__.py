@@ -2,8 +2,7 @@ from flask_cors import CORS
 import json
 from flasgger import Swagger
 from flask import Flask, request, jsonify
-from theresa.entity_extraction.rapid_api import entity_extraction
-from theresa.entity_extraction.rapid_api import transform_to_knowledge_graph_spec
+from theresa.entity_extraction.graph_gpt import entity_extraction
 from theresa.expand.google_knowledge_graph_api import node_expand
 
 
@@ -29,12 +28,14 @@ def create_app():
             in: query
             type: string
             required: true
+            schema:
+              type: string
+              example: React is a free and open-source front-end JavaScript library
         responses:
           200:
             description: A mapping from sentence word to its label
         """
-        rapid_api_result = entity_extraction([request.args.get('sentence')])
-        return jsonify(transform_to_knowledge_graph_spec(rapid_api_result))
+        return jsonify(entity_extraction([request.args.get('sentence')]))
 
     @app.route("/expand")
     def expand():

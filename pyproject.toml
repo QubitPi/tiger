@@ -8,7 +8,8 @@ dependencies = [
     "flask",
     "flasgger == 0.9.7b2",
     "requests",
-    "flask-cors"
+    "flask-cors",
+    "translate"
 ]
 
 [tool.setuptools.packages.find]
