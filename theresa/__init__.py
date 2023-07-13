@@ -13,9 +13,9 @@ def create_app():
 
     swagger = Swagger(app)
 
-    @app.route("/sanityCheck")
+    @app.route("/healthcheck")
     def hello():
-        return "Success"
+        return "Success", 200
 
     @app.route("/entityExtraction")
     def named_entity_extraction():
