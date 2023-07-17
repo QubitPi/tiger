@@ -27,7 +27,7 @@ def _detect_language(text: str):
             "text": text
         }]
     }
-    iso6391Name: str = requests.post(url, json=payload, headers=headers)["documents"][0]["detectedLanguages"][0][
+    iso6391Name: str = requests.post(url, json=payload, headers=headers).json()["documents"][0]["detectedLanguage"][
         "iso6391Name"]
 
     if iso6391Name == "zh_chs":
