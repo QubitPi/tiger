@@ -19,6 +19,37 @@ updates:
 """
 
 
+def _construct_knowledge_graph_spec_node(extrapolated_entity: str):
+    return {
+        "id": extrapolated_entity,
+        "fields": {
+            "label": extrapolated_entity,
+            "type": "entity"
+        }
+    }
+
+
+def _construct_knowledge_graph_spec_link(source: str, target: str, extrapolated_relationship: str):
+    return {
+        "source": source,
+        "target": target,
+        "fields": {
+            "label": extrapolated_relationship
+        }
+    }
+
+
+def _remove_duplicates(nodes: list) -> list:
+    """
+    De-duplicates nodes by node.id and returns a new list of unique nodes.
+
+    :param nodes:  The node list with potential duplicaets
+
+    :return: a list of nodes with unique id's
+    """
+    return list({node["id"]: node for node in nodes}.values())
+
+
 def _convert_to_knowledge_graph_spec(response):
     """
     Given the completion API (https://platform.openai.com/docs/api-reference/completions) response, this method
@@ -36,42 +67,14 @@ def _convert_to_knowledge_graph_spec(response):
 
     for rdf_pair in rdf_pairs:
         if len(rdf_pair) == 2:
-            nodes.append({
-                "id": rdf_pair[0],
-                "fields": {
-                    "label": rdf_pair[0],
-                    "type": "entity"
-                }
-            }),
-            nodes.append({
-                "id": rdf_pair[1],
-                "fields": {
-                    "label": rdf_pair[1],
-                    "type": "entity"
-                }
-            })
+            nodes.append(_construct_knowledge_graph_spec_node(rdf_pair[0]))
+            nodes.append(_construct_knowledge_graph_spec_node(rdf_pair[1]))
         else:
-            nodes.append({
-                "id": rdf_pair[0],
-                "fields": {
-                    "label": rdf_pair[0],
-                    "type": "entity"
-                }
-            }),
-            nodes.append({
-                "id": rdf_pair[2],
-                "fields": {
-                    "label": rdf_pair[2],
-                    "type": "entity"
-                }
-            })
-            links.append({
-                "source": rdf_pair[0],
-                "target": rdf_pair[2],
-                "fields": {
-                    "label": rdf_pair[1]
-                }
-            })
+            nodes.append(_construct_knowledge_graph_spec_node(rdf_pair[0]))
+            nodes.append(_construct_knowledge_graph_spec_node(rdf_pair[2]))
+            links.append(_construct_knowledge_graph_spec_link(rdf_pair[0], rdf_pair[2], rdf_pair[1]))
+
+    nodes = _remove_duplicates(nodes)
 
     return {
         "nodes": nodes,
