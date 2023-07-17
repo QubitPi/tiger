@@ -33,7 +33,7 @@ resource "aws_instance" "paion-data-nexusgraph-theresa-1" {
     python3.10 -m pip install .
     export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
 
-    flask --app theresa run --host=0.0.0.0
+    gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
 }
 
@@ -57,7 +57,7 @@ resource "aws_instance" "paion-data-nexusgraph-theresa-2" {
     python3.10 -m pip install .
     export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
 
-    flask --app theresa run --host=0.0.0.0
+    gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
 }
 
@@ -81,6 +81,6 @@ resource "aws_instance" "paion-data-nexusgraph-theresa-3" {
     python3.10 -m pip install .
     export APP_CONFIG_FILE=/home/ubuntu/settings.cfg
 
-    flask --app theresa run --host=0.0.0.0
+    gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
 }
