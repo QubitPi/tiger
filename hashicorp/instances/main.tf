@@ -51,7 +51,7 @@ resource "aws_instance" "theresa-dev" {
     sudo nginx -t
     sudo nginx -s reload
 
-    flask --app theresa run --host=0.0.0.0
+    gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
 }
 
@@ -87,7 +87,7 @@ resource "aws_instance" "theresa-prod" {
     sudo nginx -t
     sudo nginx -s reload
 
-    flask --app theresa run --host=0.0.0.0
+    gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
 }
 
