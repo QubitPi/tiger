@@ -96,8 +96,45 @@ This is a private repo on GitHub, which offers only 2000 min GitHub Action minut
 [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
 usage can be viewed at https://github.com/settings/billing
 
+### Production Deployment
+
+After developing Theresa, we'll want to make it available publicly to other users. The built-in development server,
+debugger, and reloader we use for local development should not be used in production. Instead, we use a dedicated
+[WSGI server](#wsgi-servers)
+
+<details>
+<summary>WSGI Servers</summary>
+
+A [Web Server Gateway Interface][WSGI] (WSGI) server implements the web server side of the WSGI interface for running
+Python web applications.
+
+#### Why is WSGI necessary?
+
+A traditional web server does not understand or have any way to run Python applications. In the late 1990s, a developer
+named Grisha Trubetskoy
+[came up with an Apache module called mod_python](http://grisha.org/blog/2013/10/25/mod-python-the-long-story/) to
+execute arbitrary Python code. For several years in the late 1990s and early 2000s, Apache configured with mod_python
+ran most Python web applications.
+
+However, mod_python wasn't a standard specification. It was just an implementation that allowed Python code to run on a
+server. As mod_python's development stalled and security vulnerabilities were discovered there was recognition by the
+community that a consistent way to execute Python code for web applications was needed.
+
+Therefore the Python community came up with WSGI as a standard interface that modules and containers could implement.
+WSGI is now the accepted approach for running Python web applications.
+
+![Error loading wsgi-interface.png](./docs/wsgi-interface.png)
+
+As shown in the above diagram, a WSGI server simply invokes a callable object on the WSGI application as defined by the
+[PEP 3333][PEP 3333] standard.
+
+</details>
+
 
 [Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
 [Flasgger]: https://github.com/flasgger/flasgger
 
+[PEP 3333]: https://qubitpi.github.io/peps/pep-3333.html
 [Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white
+
+[WSGI]: https://www.fullstackpython.com/wsgi-servers.html

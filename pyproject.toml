@@ -6,6 +6,7 @@ readme = "README.md"
 maintainers = [{name = "Jiaqi Liu", email = "jack20220723@gmail.com"}]
 dependencies = [
     "flask",
+    "gunicorn",
     "flasgger == 0.9.7b2",
     "requests",
     "flask-cors",
