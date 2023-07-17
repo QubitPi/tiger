@@ -5,7 +5,7 @@ from flask import current_app  # https://stackoverflow.com/a/32017603
 from theresa.entity_extraction.graph_gpt import entity_extraction
 
 
-def _detect_language(text: str):
+def _detect_language_as_either_zh_or_en(text: str):
     """
     Returns the most probable language (either Chinese or English) of a specified text via RapidAPI at
     https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1/ (Detect
@@ -13,7 +13,7 @@ def _detect_language(text: str):
 
     :param text:  The provided text to be analyzed
 
-    :return: ISO 6391 code of the detected language. If it's simplified Chinese, return "zh" instead
+    :return: one of two values: "zh" or "en"
     """
     url = "https://microsoft-text-analytics1.p.rapidapi.com/languages"
     headers = {
@@ -44,7 +44,7 @@ def _fire_request(query: str) -> Response:
 
     :return: a Google Knowledge Graph API response object (Not in Knowledge Graph Spec format)
     """
-    iso_language: str = _detect_language(query)
+    iso_language: str = _detect_language_as_either_zh_or_en(query)
 
     QUERY_TEMPLATE = "https://kgsearch.googleapis.com/v1/entities:search?query={query}&key={" \
                      "api_key}&limit=1&indent=True&languages={language}"
