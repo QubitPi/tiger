@@ -132,8 +132,7 @@ def entity_extraction(sentences: list[str]):
     knowledge_graph_desc = " ".join(sentences)
     prompt = _transform_desc_to_prompt(knowledge_graph_desc)
     response = _entity_extraction_via_completion_api(prompt)
-    knowledge_graph_spec = _convert_to_knowledge_graph_spec(response)
-    return knowledge_graph_spec
+    return _convert_to_knowledge_graph_spec(response)
 
 
 if __name__ == '__main__':
