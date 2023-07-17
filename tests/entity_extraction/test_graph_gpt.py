@@ -47,7 +47,7 @@ class TestFindS(TestCase):
         expected = """
 Given a prompt, extrapolate as many relationships as possible from it and provide a list of updates.
 
-If an update is a relationship, provide [ENTITY 1, RELATIONSHIP, ENTITY 2]. The relationship is directed, so the order matters.
+If an update is a relationship, provide [ENTITY 1, RELATIONSHIP, ENTITY 2] in its original language. The relationship is directed, so the order matters.
 
 Example:
 prompt: Alice is Bob's roommate. Make her node green.
