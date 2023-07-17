@@ -2,16 +2,12 @@ import ast
 import json
 import requests
 from requests import Response
-from translate import Translator
 from flask import current_app # https://stackoverflow.com/a/32017603
-
-
-TRANSLATOR = Translator(to_lang="Chinese")
 
 PROMPT_TEMPLATE = """
 Given a prompt, extrapolate as many relationships as possible from it and provide a list of updates.
 
-If an update is a relationship, provide [ENTITY 1, RELATIONSHIP, ENTITY 2]. The relationship is directed, so the order matters.
+If an update is a relationship, provide [ENTITY 1, RELATIONSHIP, ENTITY 2] in its original language. The relationship is directed, so the order matters.
 
 Example:
 prompt: Alice is Bob's roommate. Make her node green.
@@ -21,27 +17,6 @@ updates:
 prompt: {}
 updates:
 """
-
-
-def _translate(knowledge_graph_spec, knowledge_graph_desc: str):
-    """
-    Graph GPT transforms knowledge graph description into English before processing; if the original knowledge graph
-    description is not English, this method translate them back to the original language.
-
-    For each node label or link label, if the label is not a substring of the original knowledge graph description,
-    the label is translated back to CHINESE
-
-    :param knowledge_graph_spec:  A knowledge graph spec all in English ready to be returned to client
-    :param knowledge_graph_desc:  The original client-sent text
-    :return:
-    """
-    for node in knowledge_graph_spec["nodes"]:
-        if node["fields"]["label"] not in knowledge_graph_desc:
-            node["fields"]["label"] = TRANSLATOR.translate(node["fields"]["label"])
-    for link in knowledge_graph_spec["links"]:
-        if link["fields"]["label"] not in knowledge_graph_desc:
-            link["fields"]["label"] = TRANSLATOR.translate(link["fields"]["label"])
-    return knowledge_graph_spec
 
 
 def _convert_to_knowledge_graph_spec(response):
@@ -157,8 +132,7 @@ def entity_extraction(sentences: list[str]):
     knowledge_graph_desc = " ".join(sentences)
     prompt = _transform_desc_to_prompt(knowledge_graph_desc)
     response = _entity_extraction_via_completion_api(prompt)
-    knowledge_graph_spec = _convert_to_knowledge_graph_spec(response)
-    return _translate(knowledge_graph_spec, knowledge_graph_desc)
+    return _convert_to_knowledge_graph_spec(response)
 
 
 if __name__ == '__main__':
