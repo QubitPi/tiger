@@ -9,10 +9,24 @@ prediction over HTTP to Java-based WS layer**.
 Entity Extraction
 -----------------
 
-### GraphGPT
+### Completion API
 
-- [GitHub](https://github.com/varunshenoy/GraphGPT)
-- [YouTube](https://www.youtube.com/watch?v=mYCIRcobukI&t=1s)
+The whole story began when I was searching for materials of Nexus Graph logo and saw 
+[GraphGPT](https://www.youtube.com/watch?v=mYCIRcobukI&t=1s) ([GitHub](https://github.com/varunshenoy/GraphGPT)), which
+open up my journey to OpenAI. GraphGPT used completion endpoint.
+
+- The **completions** endpoint is the core of OpenAI's API. You input some text as a prompt, and the API will return a
+  text completion that attempts to match whatever instructions or context you gave it. **Designing our prompt is
+  essentially how we "program" the model**.
+- Adding examples to your prompt can help communicate patterns or nuances
+- completions settings
+
+  - **temperature** is a value between 0 and 1 from the most deterministic result to the most
+    per-request-different result
+
+- The models process text by breaking it down into smaller units called tokens
+- **Pricing is pay-as-you-go per 1,000 tokens**
+
 
 Development
 -----------

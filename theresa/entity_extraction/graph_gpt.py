@@ -18,7 +18,7 @@ prompt: Alice is Bob's roommate. Make her node green.
 updates:
 [["Alice", "roommate", "Bob"]]
 
-prompt: PROMPT_CONTENTS
+prompt: {}
 updates:
 """
 
@@ -104,10 +104,17 @@ def _convert_to_knowledge_graph_spec(response):
     }
 
 
-def _entity_extraction_via_graph_gpt(prompt: str) -> Response:
+def _entity_extraction_via_completion_api(prompt: str) -> Response:
     """
     Queries the Completion API (https://platform.openai.com/docs/api-reference/completions) to perform the entity
     extraction.
+
+    A single API request can only process up to 4,096 tokens between your prompt and completion.
+
+    Although openai library (https://github.com/openai/openai-quickstart-python/blob/master/app.py) is there, let's
+    keep Theresa SIMPLE by eliminating dependencies as much as possible
+    (https://ramsrigoutham.medium.com/why-choose-python-requests-over-python-client-for-libraries-3454c92670ae). For
+    this reason, we do simple CURL
 
     :param prompt:  The API notion's of prompt
 
@@ -143,13 +150,13 @@ def _transform_desc_to_prompt(knowledge_graph_desc: str) -> str:
 
     :return: PROMPT_TEMPLATE instantiated by the provided specified knowledge graph
     """
-    return PROMPT_TEMPLATE.replace('PROMPT_CONTENTS', knowledge_graph_desc)
+    return PROMPT_TEMPLATE.format(knowledge_graph_desc)
 
 
 def entity_extraction(sentences: list[str]):
     knowledge_graph_desc = " ".join(sentences)
     prompt = _transform_desc_to_prompt(knowledge_graph_desc)
-    response = _entity_extraction_via_graph_gpt(prompt)
+    response = _entity_extraction_via_completion_api(prompt)
     knowledge_graph_spec = _convert_to_knowledge_graph_spec(response)
     return _translate(knowledge_graph_spec, knowledge_graph_desc)
 
