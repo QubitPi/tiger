@@ -23,7 +23,7 @@ def create_app():
         对一段文字进行知识抽取分析
         ---
         parameters:
-          - name: sentence
+          - name: text
             description: 被分析的文字，可以是一个句子，也可以是一段话，内容格式和长度不限
             in: query
             type: string
@@ -33,11 +33,11 @@ def create_app():
               example: React is a free and open-source front-end JavaScript library
         responses:
           200:
-            description: A mapping from sentence word to its label
+            description: A mapping from text word to its label
         """
-        if len(request.args.get('sentence')) == 0:
-            return "🤨 I'm sorry but 'sentence' cannot be an empty string", 400
-        return jsonify(entity_extraction([request.args.get('sentence')]))
+        if len(request.args.get('text')) == 0:
+            return "🤨 I'm sorry but 'text' cannot be an empty string", 400
+        return jsonify(entity_extraction(request.args.get('text')))
 
     @app.route("/expand")
     def expand():

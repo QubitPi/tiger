@@ -100,7 +100,7 @@ usage can be viewed at https://github.com/settings/billing
 
 After developing Theresa, we'll want to make it available publicly to other users. The built-in development server,
 debugger, and reloader we use for local development should not be used in production. Instead, we use a dedicated
-[WSGI server](#wsgi-servers)
+[WSGI server](#wsgi-servers) listening at port **8000**
 
 <details>
 <summary>WSGI Servers</summary>
