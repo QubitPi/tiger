@@ -103,7 +103,7 @@ def _entity_extraction_via_completion_api(prompt: str) -> Response:
     payload = {
         "model": "text-davinci-003",
         "temperature": 0.3,
-        "max_tokens": 1000,
+        "max_tokens": 800,
         "top_p": 1,
         "frequency_penalty": 0,
         "presence_penalty": 0,
