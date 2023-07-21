@@ -95,10 +95,7 @@ def node_expand(node: object):
                     if response_body["itemListElement"][0]["result"]["detailedDescription"]:
                         if response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]:
                             expanded_graph = entity_extraction(
-                                [
-                                    response_body["itemListElement"][0]["result"]["detailedDescription"][
-                                        "articleBody"]
-                                ]
+                                response_body["itemListElement"][0]["result"]["detailedDescription"]["articleBody"]
                             )
 
                             nodes.extend(expanded_graph["nodes"])
