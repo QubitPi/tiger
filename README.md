@@ -1,10 +1,11 @@
-Theresa (Machine Learning Webservice) <sup>![Python Version Badge][Python Version Badge]</sup>
-==============================================================================================
+Theresa <sup>![Python Version Badge][Python Version Badge]</sup>
+================================================================
 
-**The principle of Theresa is one thing: SIMPLE**. Theresa is deployed as a
-[separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
-request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
-prediction over HTTP to Java-based WS layer**.
+- Since this is a private-repo for a single person, documentations are all on this README file
+- **The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
+  [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
+  request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
+  prediction over HTTP to Java-based WS layer**.
 
 Entity Extraction
 -----------------

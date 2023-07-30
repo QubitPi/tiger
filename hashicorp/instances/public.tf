@@ -1,10 +1,10 @@
-data "aws_ami" "latest-theresa-prod" {
+data "aws_ami" "latest-theresa-public" {
   most_recent = true
   owners = ["899075777617"]
 
   filter {
     name   = "name"
-    values = ["theresa-prod"]
+    values = ["theresa-public"]
   }
 
   filter {
@@ -13,13 +13,13 @@ data "aws_ami" "latest-theresa-prod" {
   }
 }
 
-resource "aws_instance" "theresa-prod" {
-  ami = "${data.aws_ami.latest-theresa-prod.id}"
+resource "aws_instance" "theresa-public" {
+  ami = "${data.aws_ami.latest-theresa-public.id}"
   instance_type = "t2.small"
   tags = {
-    Name = "Paion Data Theresa (Prod)"
+    Name = "Theresa Public"
   }
-  security_groups = ["Paion Data Theresa"]
+  security_groups = ["Theresa Public"]
 
   user_data = <<-EOF
     #!/bin/bash
@@ -38,13 +38,4 @@ resource "aws_instance" "theresa-prod" {
 
     gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
-}
-
-resource "aws_route53_record" "machine-learning-paion-data-com" {
-  zone_id         = "Z041761836EZCKFO9AWXN"
-  name            = "machine-learning.paion-data.com"
-  type            = "A"
-  ttl             = 300
-  records         = [aws_instance.theresa-prod.public_ip]
-  allow_overwrite = true
 }
