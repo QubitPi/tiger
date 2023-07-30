@@ -41,7 +41,7 @@ build {
 
   # Load Nginx config file into AMI image
   provisioner "file" {
-    source = "./nginx-ssl-prod.conf"
+    source = "./nginx-ssl-public.conf"
     destination = "/home/ubuntu/nginx-ssl.conf"
   }
 
