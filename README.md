@@ -90,12 +90,24 @@ coverage html  # open htmlcov/index.html in a browser
 CI/CD
 -----
 
-- Uses [HashiCorp Packer + Terraform](./hashicorp) which also automates SSL config
-- Before CI/CD, we still need to **manually cleanup old EC2 instance**
+![Error loadging deployment.png](./docs/deployment.png)
 
-This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
-[CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
-usage can be viewed at https://github.com/settings/billing
+- [Diagram source code](./docs/deployment.drawio)
+- This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
+  [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
+  usage can be viewed at https://github.com/settings/billing
+- To protect API from unauthorized use:
+
+  - Rapid API instance uses Nginx to check [Rapid API gateway header][Rapid API firewall settings] so that only Rapid
+    API requests can hit public instance
+  - Although there is no check between EC2 and its load balancer, the load balancer binds to a Security Group called
+    "Paion Data nexusgraph Theresa Load Balancer" whose inbound rules only allows requests from app.nexusgraph.com EC2
+    instances
+
+- After [CI/CD](./.github/workflows/ci-cd.yml) completes, we still need to
+
+  - Manually bind EC2 instances to nexusgraph LB target groups and delete old instances
+  - Manually update Base URL on RapidAPI
 
 ### Production Deployment
 
@@ -137,5 +149,7 @@ As shown in the above diagram, a WSGI server simply invokes a callable object on
 
 [PEP 3333]: https://qubitpi.github.io/peps/pep-3333.html
 [Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white
+
+[Rapid API firewall settings]: https://docs.rapidapi.com/docs/security-threat-protection#firewall-settings
 
 [WSGI]: https://www.fullstackpython.com/wsgi-servers.html
