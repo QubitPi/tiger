@@ -26,9 +26,7 @@ sudo apt install python3.8-venv -y
 
 # Install Nginx and load SSL config
 sudo apt install -y nginx
-sudo mv /home/ubuntu/nginx-ssl.conf /etc/nginx/sites-enabled/default
-sudo mv /home/ubuntu/server.crt /etc/ssl/certs/server.crt
-sudo mv /home/ubuntu/server.key /etc/ssl/private/server.key
+sudo mv /home/ubuntu/nginx.conf /etc/nginx/sites-enabled/default
 
 git clone https://$GH_PAT_READ@github.com/QubitPi/theresa.git
 cd /home/ubuntu/theresa

@@ -55,12 +55,6 @@ jobs:
           sed -i -e 's/GOOGLE_KNOWLEDGE_GRAPH_API_KEY_INJECTED_BY_CI_CD/${{ secrets.GOOGLE_KNOWLEDGE_GRAPH_API_KEY }}/g' settings.cfg
           sed -i -e 's/OPEN_AI_API_KEY_INJECTED_BY_CI_CD/${{ secrets.OPEN_AI_API_KEY }}/g' settings.cfg
 
-      - name: Load SSL Certificates
-        working-directory: hashicorp/images
-        run: |
-          echo '${{ secrets.SSL_CERTIFICATE_PROD }}' > server-prod.crt
-          echo '${{ secrets.SSL_CERTIFICATE_KEY_PROD }}' > server-prod.key
-
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master
         with:

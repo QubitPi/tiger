@@ -1,5 +1,5 @@
-source "amazon-ebs" "theresa-prod" {
-  ami_name = "theresa-prod"
+source "amazon-ebs" "theresa-public" {
+  ami_name = "theresa-public"
   force_deregister = "true"
   force_delete_snapshot = "true"
 
@@ -18,9 +18,9 @@ source "amazon-ebs" "theresa-prod" {
 }
 
 build {
-  name = "install-theresa-prod"
+  name = "install-theresa-public"
   sources = [
-    "source.amazon-ebs.theresa-prod"
+    "source.amazon-ebs.theresa-public"
   ]
 
   # Load Flask config file into AMI image
@@ -29,26 +29,16 @@ build {
     destination = "/home/ubuntu/settings.cfg"
   }
 
-  # Load SSL Certificates into AMI image
-  provisioner "file" {
-    source = "./server-prod.crt"
-    destination = "/home/ubuntu/server.crt"
-  }
-  provisioner "file" {
-    source = "./server-prod.key"
-    destination = "/home/ubuntu/server.key"
-  }
-
   # Load Nginx config file into AMI image
   provisioner "file" {
-    source = "./nginx-ssl-public.conf"
-    destination = "/home/ubuntu/nginx-ssl.conf"
+    source = "./nginx-public.conf"
+    destination = "/home/ubuntu/nginx.conf"
   }
 
   provisioner "shell" {
     environment_vars = [
       "GH_PAT_READ=${var.gh_pat_read}"
     ]
-    script = "../scripts/setup.sh"
+    script = "../scripts/public-setup.sh"
   }
 }
