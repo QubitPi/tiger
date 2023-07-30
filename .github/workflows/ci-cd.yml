@@ -58,8 +58,6 @@ jobs:
       - name: Load SSL Certificates
         working-directory: hashicorp/images
         run: |
-          echo '${{ secrets.SSL_CERTIFICATE_DEV }}' > server-dev.crt
-          echo '${{ secrets.SSL_CERTIFICATE_KEY_DEV }}' > server-dev.key
           echo '${{ secrets.SSL_CERTIFICATE_PROD }}' > server-prod.crt
           echo '${{ secrets.SSL_CERTIFICATE_KEY_PROD }}' > server-prod.key
 
