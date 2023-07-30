@@ -54,6 +54,7 @@ jobs:
           sed -i -e 's/X_RAPIDAPI_KEY_MICROSOFT_LANGUAGE_DETECTION_INJECTED_BY_CI_CD/${{ secrets.X_RAPIDAPI_KEY_MICROSOFT_LANGUAGE_DETECTION }}/g' settings.cfg
           sed -i -e 's/GOOGLE_KNOWLEDGE_GRAPH_API_KEY_INJECTED_BY_CI_CD/${{ secrets.GOOGLE_KNOWLEDGE_GRAPH_API_KEY }}/g' settings.cfg
           sed -i -e 's/OPEN_AI_API_KEY_INJECTED_BY_CI_CD/${{ secrets.OPEN_AI_API_KEY }}/g' settings.cfg
+          sed -i -e 's/X_RAPIDAPI_PROXY_SECRET_INJECTED_BY_CI_CD/${{ secrets.X_RAPIDAPI_PROXY_SECRET }}/g' nginx-public.conf
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master
