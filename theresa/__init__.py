@@ -1,5 +1,4 @@
 from flask_cors import CORS
-import json
 from flasgger import Swagger
 from flask import Flask, request, jsonify
 from theresa.entity_extraction.graph_gpt import entity_extraction
@@ -11,72 +10,87 @@ def create_app():
     CORS(app)
     app.config.from_envvar("APP_CONFIG_FILE")
 
-    swagger = Swagger(app)
+    app.config['SWAGGER'] = {
+        'title': 'Theresa API',
+        'openapi': '3.0.2'
+    }
+    Swagger(app)
 
     @app.route("/healthcheck")
     def hello():
         return "Success", 200
 
-    @app.route("/entityExtraction")
+    @app.route("/entityExtraction", methods = ["POST"])
     def named_entity_extraction():
         """
         对一段文字进行知识抽取分析
         ---
-        parameters:
-          - name: text
-            description: 被分析的文字，可以是一个句子，也可以是一段话，内容格式和长度不限
-            in: query
-            type: string
-            required: true
-            schema:
-              type: string
-              example: React is a free and open-source front-end JavaScript library
+        requestBody:
+          description: |
+            被分析的文字，支持中英文，可以是一个句子，也可以是一段话，内容格式和长度不限，用一个 JSON 表示，key = "text"，
+            被分析的文字是 key 对应的值，例如：
+
+            ```json
+            {
+                "text": "React is a free and open-source front-end JavaScript library"
+            }
+            ```
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    required: true
+                example:
+                  text: "React is a free and open-source front-end JavaScript library"
         responses:
           200:
-            description: A mapping from text word to its label
+            description: Success
         """
-        if len(request.args.get('text')) == 0:
-            return "🤨 I'm sorry but 'text' cannot be an empty string", 400
-        return jsonify(entity_extraction(request.args.get('text')))
+        return jsonify(entity_extraction(request.get_json()["text"]))
 
-    @app.route("/expand")
+    @app.route("/expand", methods = ["POST"])
     def expand():
         """
         对一个节点进行展开操作并返回与之相关的新节点和关系
         ---
-        parameters:
-          - name: node
-            description: |
-              一个节点对象，举例如下
-              对象必须包含 "id" 和 "fields" 两个属性
-              "id" 是这个节点的在一张图谱中的唯一标识
-              "fields" 是这个节点上的属性（即前端 NodeModel 中 "propertiesList" 里的 key-value pairs），"fields" 可以包含任何属性
-            in: query
-            required: true
-            type: object
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  required: true
-                fields:
-                  type: object
-                  required: true
-              example:
-                id: "TypeScript"
-                fields:
-                  name: "TypeScript"
-                  anyOtherFields1: "foo"
-                  anyOtherFields2: "bar"
+        requestBody:
+          description: |
+              一个节点 JSON，JSON 必须包含 `id` 和 `fields` 两个属性
+
+              - "id" 是这个节点的在一张图谱中的唯一标识
+              - "fields" 是这个节点上的属性（即前端 NodeModel 中 "propertiesList" 里的 key-value pairs），
+                "fields" 可以包含任何属性
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    required: true
+                    properties:
+                      id:
+                        type: string
+                        required: true
+                      fields:
+                        type: object
+                        required: true
+                example:
+                  node:
+                    id: "TypeScript"
+                    fields:
+                      name: "TypeScript"
+                      anyOtherFields1: "foo"
+                      anyOtherFields2: "bar"
         responses:
           200:
-            description: 一张独立的知识图谱
-          400 ~ 499:
-            description: 前端请求参数不合法，请确保 "node" 传参和上面的举例一致
-          500+:
-            description: 后端服务异常，请通知 Jack 查看
+            description: Success
         """
-        return jsonify(node_expand(json.loads(request.args.get('node'))))
+        return jsonify(node_expand(request.get_json()["node"]))
 
     return app
