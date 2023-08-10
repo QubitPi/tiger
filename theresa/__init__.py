@@ -59,11 +59,27 @@ def create_app():
         ---
         requestBody:
           description: |
-              一个节点 JSON，JSON 必须包含 `id` 和 `fields` 两个属性
+            一个节点 JSON，JSON 必须包含 `id` 和 `fields` 两个属性
 
-              - "id" 是这个节点的在一张图谱中的唯一标识
-              - "fields" 是这个节点上的属性（即前端 NodeModel 中 "propertiesList" 里的 key-value pairs），
-                "fields" 可以包含任何属性
+            - "id" 是这个节点的在一张图谱中的唯一标识
+            - "fields" 是这个节点上的属性（即前端 NodeModel 中 "propertiesList" 里的 key-value pairs），
+              "fields" 可以包含任何属性
+
+            例如：
+
+            ```json
+            {
+                "node": {
+                    "fields": {
+                      "anyOtherFields1": "foo",
+                      "anyOtherFields2": "bar",
+                      "name": "TypeScript"
+                    },
+                    "id": "TypeScript"
+                }
+            }
+            ```
+
           required: true
           content:
             application/json:
@@ -85,8 +101,6 @@ def create_app():
                     id: "TypeScript"
                     fields:
                       name: "TypeScript"
-                      anyOtherFields1: "foo"
-                      anyOtherFields2: "bar"
         responses:
           200:
             description: Success
