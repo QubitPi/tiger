@@ -5,9 +5,8 @@ from theresa.entity_extraction.graph_gpt import _construct_knowledge_graph_spec_
 from theresa.entity_extraction.graph_gpt import _construct_knowledge_graph_spec_node
 from theresa.entity_extraction.graph_gpt import _convert_to_knowledge_graph_spec
 from theresa.entity_extraction.graph_gpt import _transform_desc_to_prompt
-from theresa.entity_extraction.graph_gpt import _remove_duplicates
 
-class TestFindS(TestCase):
+class TestGraphGPT(TestCase):
 
     def test_making_knowledge_graph_node_from_extrapolated_result(self):
         self.assertEqual(
@@ -31,12 +30,6 @@ class TestFindS(TestCase):
                 }
             },
             _construct_knowledge_graph_spec_link("China", "strong country", "is a")
-        )
-
-    def test_deduplicating_nodes_by_id(self):
-        self.assertEqual(
-            [{"id": "china"}, {"id": "us"}],
-            _remove_duplicates([{"id": "china"}, {"id": "us"}, {"id": "china"}])
         )
 
     def test_convert_to_knowledge_graph_spec(self):

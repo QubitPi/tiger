@@ -1,8 +1,10 @@
 from flask_cors import CORS
 from flasgger import Swagger
 from flask import Flask, request, jsonify
+
 from theresa.entity_extraction.graph_gpt import entity_extraction
 from theresa.expand.google_knowledge_graph_api import node_expand
+from theresa.neo4j import json_parser
 
 
 def create_app():
@@ -19,6 +21,111 @@ def create_app():
     @app.route("/healthcheck")
     def hello():
         return "Success", 200
+
+    @app.route("/neo4Json2Spec", methods = ["POST"])
+    def neo4json_2_spec():
+        """
+        将 Neo4J Browser 的 JSON 图谱导出文件转换成一张 Nexus Graph 格式的知识图谱
+        ---
+        requestBody:
+          description: A json
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  [
+                    {
+                      "r":{
+                        "elementType":"relationship",
+                        "identity":2,
+                        "start":0,
+                        "end":1,
+                        "type":"got interrupted by",
+                        "properties":{
+
+                        },
+                        "elementId":"2",
+                        "startNodeElementId":"0",
+                        "endNodeElementId":"1"
+                      },
+                      "m":{
+                        "elementType":"node",
+                        "identity":1,
+                        "labels":[
+                          "Undefined"
+                        ],
+                        "properties":{
+                          "name":"Hacker",
+                          "description":"A person who eavesdrops communication",
+                          "id":"attacker"
+                        },
+                        "elementId":"1"
+                      },
+                      "n":{
+                        "elementType":"node",
+                        "identity":0,
+                        "labels":[
+                          "Person"
+                        ],
+                        "properties":{
+                          "name":"Bob",
+                          "description":"A person who sends an email",
+                          "label":"Person",
+                          "id":"sender"
+                        },
+                        "elementId":"0"
+                      }
+                    },
+                    {
+                      "r":{
+                        "elementType":"relationship",
+                        "identity":3,
+                        "start":1,
+                        "end":2,
+                        "type":"sends 'fake' message to alice",
+                        "properties":{
+
+                        },
+                        "elementId":"3",
+                        "startNodeElementId":"1",
+                        "endNodeElementId":"2"
+                      },
+                      "m":{
+                        "elementType":"node",
+                        "identity":2,
+                        "labels":[
+                          "Person"
+                        ],
+                        "properties":{
+                          "name":"Alice",
+                          "description":"A person who receives a message",
+                          "label":"Person",
+                          "id":"receiver"
+                        },
+                        "elementId":"2"
+                      },
+                      "n":{
+                        "elementType":"node",
+                        "identity":1,
+                        "labels":[
+                          "Undefined"
+                        ],
+                        "properties":{
+                          "name":"Hacker",
+                          "description":"A person who eavesdrops communication",
+                          "id":"attacker"
+                        },
+                        "elementId":"1"
+                      }
+                    }
+                  ]
+        responses:
+          200:
+            description: Success
+        """
+        return jsonify(json_parser.neo4json_2_spec(request.get_json()))
 
     @app.route("/entityExtraction", methods = ["POST"])
     def named_entity_extraction():
