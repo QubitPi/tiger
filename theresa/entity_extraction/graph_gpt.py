@@ -4,6 +4,8 @@ import requests
 from requests import Response
 from flask import current_app # https://stackoverflow.com/a/32017603
 
+from theresa.common import remove_duplicates
+
 PROMPT_TEMPLATE = """
 Given a prompt, extrapolate as many relationships as possible from it and provide a list of updates.
 
@@ -39,17 +41,6 @@ def _construct_knowledge_graph_spec_link(source: str, target: str, extrapolated_
     }
 
 
-def _remove_duplicates(nodes: list) -> list:
-    """
-    De-duplicates nodes by node.id and returns a new list of unique nodes.
-
-    :param nodes:  The node list with potential duplicaets
-
-    :return: a list of nodes with unique id's
-    """
-    return list({node["id"]: node for node in nodes}.values())
-
-
 def _convert_to_knowledge_graph_spec(response):
     """
     Given the completion API (https://platform.openai.com/docs/api-reference/completions) response, this method
@@ -74,7 +65,7 @@ def _convert_to_knowledge_graph_spec(response):
             nodes.append(_construct_knowledge_graph_spec_node(rdf_pair[2]))
             links.append(_construct_knowledge_graph_spec_link(rdf_pair[0], rdf_pair[2], rdf_pair[1]))
 
-    nodes = _remove_duplicates(nodes)
+    nodes = remove_duplicates(nodes)
 
     return {
         "nodes": nodes,
