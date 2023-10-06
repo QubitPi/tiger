@@ -29,6 +29,22 @@ build {
     destination = "/home/ubuntu/settings.cfg"
   }
 
+  # Load SSL Certificates into AMI image
+  provisioner "file" {
+    source = "./server-nexusgraph.crt"
+    destination = "/home/ubuntu/server.crt"
+  }
+  provisioner "file" {
+    source = "./server-nexusgraph.key"
+    destination = "/home/ubuntu/server.key"
+  }
+
+  # Load Nginx config file into AMI image
+  provisioner "file" {
+    source = "./nginx-nexusgraph-ssl.conf"
+    destination = "/home/ubuntu/nginx-ssl.conf"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "GH_PAT_READ=${var.gh_pat_read}"

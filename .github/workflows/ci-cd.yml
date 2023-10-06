@@ -47,6 +47,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Load SSL Certificates
+        working-directory: hashicorp/images
+        run: |
+          echo '${{ secrets.SSL_CERTIFICATE_NEXUSGRAPH }}' > server-nexusgraph.crt
+          echo '${{ secrets.SSL_CERTIFICATE_KEY_NEXUSGRAPH }}' > server-nexusgraph.key
+
       - name: Load custom environment variables into Packer variable file and inject Flask configs
         working-directory: hashicorp/images
         run: |
@@ -55,6 +61,11 @@ jobs:
           sed -i -e 's/GOOGLE_KNOWLEDGE_GRAPH_API_KEY_INJECTED_BY_CI_CD/${{ secrets.GOOGLE_KNOWLEDGE_GRAPH_API_KEY }}/g' settings.cfg
           sed -i -e 's/OPEN_AI_API_KEY_INJECTED_BY_CI_CD/${{ secrets.OPEN_AI_API_KEY }}/g' settings.cfg
           sed -i -e 's/X_RAPIDAPI_PROXY_SECRET_INJECTED_BY_CI_CD/${{ secrets.X_RAPIDAPI_PROXY_SECRET }}/g' nginx-public.conf
+
+      - name: Load custom environment variables into Terraform variable file
+        working-directory: hashicorp/instances
+        run: |
+          sed -i -e 's/NEXUSGRAPH_ZONE_ID_INJECTED_BY_CI_CD/${{ secrets.NEXUSGRAPH_ZONE_ID }}/g' nexusgraph.auto.tfvars
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master
