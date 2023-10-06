@@ -1,3 +1,9 @@
+variable "nexusgraph_zone_id" {
+  type = string
+  description = "Hosted zone ID on Route 53"
+  sensitive = true
+}
+
 data "aws_ami" "latest-nexusgraph-theresa" {
   most_recent = true
   owners = ["899075777617"]
@@ -38,7 +44,7 @@ resource "aws_instance" "paion-data-nexusgraph-theresa" {
 }
 
 resource "aws_route53_record" "theresa-nexusgraph-com" {
-  zone_id         = "Z07464521VSJ5SB33Z9R9"
+  zone_id         = var.nexusgraph_zone_id
   name            = "theresa.nexusgraph.com"
   type            = "A"
   ttl             = 300
