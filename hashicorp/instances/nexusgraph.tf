@@ -13,7 +13,7 @@ data "aws_ami" "latest-nexusgraph-theresa" {
   }
 }
 
-resource "aws_instance" "paion-data-nexusgraph-theresa-1" {
+resource "aws_instance" "paion-data-nexusgraph-theresa" {
   ami = "${data.aws_ami.latest-nexusgraph-theresa.id}"
   instance_type = "t2.small"
   tags = {
@@ -35,4 +35,13 @@ resource "aws_instance" "paion-data-nexusgraph-theresa-1" {
 
     gunicorn -w 4 -b 0.0.0.0 'theresa:create_app()'
   EOF
+}
+
+resource "aws_route53_record" "theresa-nexusgraph-com" {
+  zone_id         = "Z07464521VSJ5SB33Z9R9"
+  name            = "theresa.nexusgraph.com"
+  type            = "A"
+  ttl             = 300
+  records         = [aws_instance.paion-data-nexusgraph-theresa]
+  allow_overwrite = true
 }

@@ -47,6 +47,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Load SSL Certificates
+        working-directory: hashicorp/images
+        run: |
+          echo '${{ secrets.SSL_CERTIFICATE_NEXUSGRAPH }}' > server-nexusgraph.crt
+          echo '${{ secrets.SSL_CERTIFICATE_KEY_NEXUSGRAPH }}' > server-nexusgraph.key
+
       - name: Load custom environment variables into Packer variable file and inject Flask configs
         working-directory: hashicorp/images
         run: |
