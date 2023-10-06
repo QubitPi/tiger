@@ -25,7 +25,7 @@ def create_app():
     @app.route("/neo4Json2Spec", methods = ["POST"])
     def neo4json_2_spec():
         """
-        将 Neo4J Browser 的 JSON 图谱导出文件转换成一张 Nexus Graph 格式的知识图谱
+        Converts an exported knowledge graph from Neo4J Browser in JSON to a Knowledge Graph Spec
         ---
         requestBody:
           description: A json
@@ -130,12 +130,11 @@ def create_app():
     @app.route("/entityExtraction", methods = ["POST"])
     def named_entity_extraction():
         """
-        对一段文字进行知识抽取分析
+        Performs entity extraction on a text corpus
         ---
         requestBody:
           description: |
-            被分析的文字，支持中英文，可以是一个句子，也可以是一段话，内容格式和长度不限，用一个 JSON 表示，key = "text"，
-            被分析的文字是 key 对应的值，例如：
+            The text being analyzed. It supports both Chinese and English. For example:
 
             ```json
             {
@@ -162,17 +161,17 @@ def create_app():
     @app.route("/expand", methods = ["POST"])
     def expand():
         """
-        对一个节点进行展开操作并返回与之相关的新节点和关系
+        Expand a node
         ---
         requestBody:
           description: |
-            一个节点 JSON，JSON 必须包含 `id` 和 `fields` 两个属性
+            A node in JSON format, which must contain `id` and `fields` attributes. The `fields` itself is a JSON
+            object
 
-            - "id" 是这个节点的在一张图谱中的唯一标识
-            - "fields" 是这个节点上的属性（即前端 NodeModel 中 "propertiesList" 里的 key-value pairs），
-              "fields" 可以包含任何属性
+            - "id" is the unique identifier in a knowledge graph
+            - "fields" is the properties of this node
 
-            例如：
+            Example:
 
             ```json
             {
