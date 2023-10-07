@@ -60,9 +60,6 @@ flask --app theresa run --debug
 ```
 
 - Note that `APP_CONFIG_FILE` has to be an _absolute_ path. It has
-
-  - [X_RAPIDAPI_KEY_MICROSOFT_ENTITY_EXTRACTION](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1/)
-
 - Running locally has [debug mode][Flas debug mode] turned on
 - Swagger API (using [Flasgger][Flasgger]) is available at http://localhost:5000/apidocs/
 - The endpoints are available at http://127.0.0.1:5000 Example browser query:
