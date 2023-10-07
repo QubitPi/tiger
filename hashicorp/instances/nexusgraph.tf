@@ -23,9 +23,9 @@ resource "aws_instance" "paion-data-nexusgraph-theresa" {
   ami = "${data.aws_ami.latest-nexusgraph-theresa.id}"
   instance_type = "t2.small"
   tags = {
-    Name = "Paion Data Nexus Graph Theresa 1"
+    Name = "Paion Data Nexus Graph Theresa"
   }
-  security_groups = ["Paion Data nexusgraph Theresa"]
+  security_groups = ["Paion Data Nexus Graph Theresa"]
 
   user_data = <<-EOF
     #!/bin/bash
@@ -48,6 +48,6 @@ resource "aws_route53_record" "theresa-nexusgraph-com" {
   name            = "theresa.nexusgraph.com"
   type            = "A"
   ttl             = 300
-  records         = [aws_instance.paion-data-nexusgraph-theresa]
+  records         = [aws_instance.paion-data-nexusgraph-theresa.public_ip]
   allow_overwrite = true
 }
