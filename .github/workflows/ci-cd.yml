@@ -40,9 +40,6 @@ jobs:
     name: Release IAM image to AWS and Deploys its instance to EC2
     needs: test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: hashicorp
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -56,7 +53,6 @@ jobs:
       - name: Load custom environment variables into Packer variable file and inject Flask configs
         working-directory: hashicorp/images
         run: |
-          sed -i -e 's/GH_PAT_READ_INJECTED_BY_CI_CD/${{ secrets.GH_PAT_READ }}/g' theresa.auto.pkrvars.hcl
           sed -i -e 's/X_RAPIDAPI_KEY_MICROSOFT_LANGUAGE_DETECTION_INJECTED_BY_CI_CD/${{ secrets.X_RAPIDAPI_KEY_MICROSOFT_LANGUAGE_DETECTION }}/g' settings.cfg
           sed -i -e 's/GOOGLE_KNOWLEDGE_GRAPH_API_KEY_INJECTED_BY_CI_CD/${{ secrets.GOOGLE_KNOWLEDGE_GRAPH_API_KEY }}/g' settings.cfg
           sed -i -e 's/OPEN_AI_API_KEY_INJECTED_BY_CI_CD/${{ secrets.OPEN_AI_API_KEY }}/g' settings.cfg
@@ -66,6 +62,11 @@ jobs:
         working-directory: hashicorp/instances
         run: |
           sed -i -e 's/NEXUSGRAPH_ZONE_ID_INJECTED_BY_CI_CD/${{ secrets.NEXUSGRAPH_ZONE_ID }}/g' nexusgraph.auto.tfvars
+
+      - name: Load Theresa executable
+        run: |
+          tar -czf theresa.tar.gz *
+          mv theresa.tar.gz hashicorp/images
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master

@@ -35,10 +35,13 @@ build {
     destination = "/home/ubuntu/nginx.conf"
   }
 
+  # Load Theresa executable
+  provisioner "file" {
+    source = "./theresa.tar.gz"
+    destination = "/home/ubuntu/theresa.tar.gz"
+  }
+
   provisioner "shell" {
-    environment_vars = [
-      "GH_PAT_READ=${var.gh_pat_read}"
-    ]
     script = "../scripts/public-setup.sh"
   }
 }

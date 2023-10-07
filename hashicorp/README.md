@@ -10,8 +10,6 @@ Theresa has been deployed to
 
 The following GitHub Secrets needs to be defined:
 
-- GH_PAT_READ
-
 - AWS
 - AWS_ACCESS_KEY_ID
 - AWS_REGION
