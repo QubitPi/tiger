@@ -40,9 +40,6 @@ jobs:
     name: Release IAM image to AWS and Deploys its instance to EC2
     needs: test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: hashicorp
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -69,7 +66,7 @@ jobs:
       - name: Load Theresa executable
         run: |
           tar -czf theresa.tar.gz *
-          mv theresa.tar.gz hashicorp/images/theresa.tar.gz
+          mv theresa.tar.gz hashicorp/images
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master
