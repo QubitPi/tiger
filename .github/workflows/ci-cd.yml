@@ -69,7 +69,7 @@ jobs:
       - name: Load Theresa executable
         run: |
           tar -czf theresa.tar.gz *
-          mv theresa.tar.gz hashicorp/images
+          mv theresa.tar.gz hashicorp/images/theresa.tar.gz
 
       - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
         uses: QubitPi/hashicorp-aws@master
