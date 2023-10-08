@@ -26,10 +26,6 @@ resource "aws_instance" "paion-data-nexusgraph-theresa" {
     volume_size = 60
   }
 
-  root_block_device {
-    volume_size = 60
-  }
-
   tags = {
     Name = "Paion Data Nexus Graph Theresa"
   }
