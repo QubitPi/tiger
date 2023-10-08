@@ -9,7 +9,9 @@ dependencies = [
     "gunicorn",
     "flasgger == 0.9.7b2",
     "requests",
-    "flask-cors"
+    "flask-cors",
+
+    "hanlp"
 ]
 
 [tool.setuptools.packages.find]

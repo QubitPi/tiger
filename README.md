@@ -7,28 +7,6 @@ Theresa <sup>![Python Version Badge][Python Version Badge]</sup>
   request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
   prediction over HTTP to Java-based WS layer**.
 
-Entity Extraction
------------------
-
-### Completion API
-
-The whole story began when I was searching for materials of Nexus Graph logo and saw 
-[GraphGPT](https://www.youtube.com/watch?v=mYCIRcobukI&t=1s) ([GitHub](https://github.com/varunshenoy/GraphGPT)), which
-open up my journey to OpenAI. GraphGPT used completion endpoint.
-
-- The **completions** endpoint is the core of OpenAI's API. You input some text as a prompt, and the API will return a
-  text completion that attempts to match whatever instructions or context you gave it. **Designing our prompt is
-  essentially how we "program" the model**.
-- Adding examples to your prompt can help communicate patterns or nuances
-- completions settings
-
-  - **temperature** is a value between 0 and 1 from the most deterministic result to the most
-    per-request-different result
-
-- The models process text by breaking it down into smaller units called tokens
-- **Pricing is pay-as-you-go per 1,000 tokens**
-
-
 Development
 -----------
 
@@ -139,6 +117,65 @@ As shown in the above diagram, a WSGI server simply invokes a callable object on
 [PEP 3333][PEP 3333] standard.
 
 </details>
+
+Entity Extraction
+-----------------
+
+### Completion API
+
+The whole story began when, while I was searching for materials of Nexus Graph logo on Google Image, saw an image that
+links to this [GraphGPT on YouTube](https://www.youtube.com/watch?v=mYCIRcobukI&t=1s)
+([GitHub](https://github.com/varunshenoy/GraphGPT)). GraphGPT opened up my journey to OpenAI. Later I learnGraphGPT used
+completion endpoint.
+
+- The **completions** endpoint is the core of OpenAI's API. We input some text as a prompt, and the API will return a
+  text completion that attempts to match whatever instructions or context you gave it. **Designing our prompt is
+  essentially how we "program" the model**.
+- Adding examples to our prompt can help communicate patterns or nuances
+- completions settings
+
+  - **temperature** is a value between 0 and 1 from the most deterministic result to the most
+    per-request-different result
+
+- The models process text by breaking it down into smaller units called tokens
+- **Pricing is pay-as-you-go per 1,000 tokens**
+
+**The GraphGTP-based entity extraction is in [graph_gpt.py](./theresa/entity_extraction/graph_gpt.py) module**, but
+_OpenAI is not free and is not very cheap_, so I decided to develop an _alternative OpenAI_ from scratch
+
+### Tokenization + PoC
+
+This approach uses open source tools to
+
+1. tokenize text to generate graph nodes, and
+2. link nodes using verbs via Part of Speech tagging
+
+[This link](https://github.com/howl-anderson/Chinese_tokenizer_benchmark)
+
+... experiment result is not very good:
+
+> 米哈|游|成立|于|2011|年|,|致力于|为|用户|提供|美好|的|、|超出|预期|的|产品|与|内容|。`
+> |米哈|游|多年|来|秉持|技术|自主|创新|,|坚持|走|原创|精品|之|路|,|围绕|原创|IP|打造|了|涵盖|漫画|、`
+> |动画|、|游戏|、|音乐|、|小说|及|动漫|周边|的|全|产业链|。
+
+conclusion: this is a very good candidate for innovation
+
+### HanLP
+
+I turned and thought if recognizing a simple noun like "米哈游" is hard, why not just load a giant Chinese phrase
+corpus into a database and develop some algorithm to greedy search against it? Well, maybe it's computationally 
+expensive but simply searching for some interesting data like phrase corpus appeared to be interestingly enough for me.
+
+So I googled "汉语单词数据库" and stumbled upon
+[this link](https://www.hankcs.com/nlp/corpus/tens-of-millions-of-giant-chinese-word-library-share.html), which took
+me to this super unicorn tool - [HanLP](https://github.com/QubitPi/HanLP)
+
+I also noticed HanLP is also using 3rd party tools like `https://nlp.stanford.edu/software/stanford-parser-full-2013-11-12.zip`
+found in doc build log. So a lesson would be to **combine multiple great tools organically to build powerful knowledge
+graph generator from text**, which leads me to the next approach
+
+## Multi/Multiplex Parser
+
 
 
 [Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
