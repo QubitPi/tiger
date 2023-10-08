@@ -28,8 +28,6 @@ py -3 -m venv .venv
 
 ```bash
 python3 -m pip install .
-python3 -m spacy download zh_core_web_md
-python3 -m pip install paddlepaddle==2.5.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 3. Run Webservice Locally

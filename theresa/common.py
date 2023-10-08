@@ -6,4 +6,4 @@ def remove_duplicates(nodes: list) -> list:
 
     :return: a list of nodes with unique id's
     """
-    return list({node["fields"]["name"]: node for node in nodes}.values())
+    return list({node["id"]: node for node in nodes}.values())
