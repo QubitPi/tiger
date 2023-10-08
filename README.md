@@ -3,54 +3,54 @@ Theresa <sup>![Python Version Badge][Python Version Badge]</sup>
 
 - Since this is a private-repo for a single person, documentations are all on this README file
 - **The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
-  [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does not handle caching, auth, or
+  [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does NOT handle caching, auth, or
   request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
-  prediction over HTTP to Java-based WS layer**.
+  prediction**.
 
 Development
 -----------
 
-### 1. Create a virtualenv and Activate It
+### 1. Creating a virtualenv and Activate It
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-Or on Windows cmd::
-
-```bash
-py -3 -m venv .venv
-.venv\Scripts\activate.bat
-```
-
-### 2. Install Dependencies
+### 2. Installing Dependencies
 
 ```bash
 python3 -m pip install .
+# pip3 install hanlp[amr,fasttext,full,tf]
 ```
 
-### 3. Run Webservice Locally
+### 3. Run Webservice Locally in Dev Mode
 
 ```bash
-export APP_CONFIG_FILE=/ABSOLUTE/path/to/settings.cfg
+export APP_CONFIG_FILE=/ABSOLUTE/path/to/settings.cfg # or source ~/.bashrc
 flask --app theresa run --debug
 ```
 
-- Note that `APP_CONFIG_FILE` has to be an _absolute_ path. It has
-- Running locally has [debug mode][Flas debug mode] turned on
-- Swagger API (using [Flasgger][Flasgger]) is available at http://localhost:5000/apidocs/
-- The endpoints are available at http://127.0.0.1:5000 Example browser query:
+- Note that `APP_CONFIG_FILE` has to be an _absolute_ path.
+- Running locally has [Flask debug mode] turned on
+- Swagger API (using [Flasgger]) is available at http://localhost:5000/apidocs/
+- The endpoints are available at http://127.0.0.1:5000. Example browser query:
 
   ```bash
-  http://localhost:5000/entityExtraction?sentence="Apple is looking at buying U.K. startup for $1 billion"
+  curl --request POST \
+    --url 'http://localhost:5000' \
+    --header 'content-type: application/json' --data '{
+      "text": [
+        "米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"
+      ]
+    }'
   ```
 
 ### 4. Test
 
 ```bash
 pip3 install '.[test]'
-export APP_CONFIG_FILE=./tests/settings.test.cfg
+export APP_CONFIG_FILE=./tests/settings.test.cfg # or source ~/.bashrc
 pytest
 ```
 
@@ -84,39 +84,23 @@ CI/CD
   - Manually bind EC2 instances to nexusgraph LB target groups and delete old instances
   - Manually update Base URL on RapidAPI
 
-### Production Deployment
+### Running in Production
 
 After developing Theresa, we'll want to make it available publicly to other users. The built-in development server,
 debugger, and reloader we use for local development should not be used in production. Instead, we use a dedicated
 [WSGI server](#wsgi-servers) listening at port **8000**
 
-<details>
-<summary>WSGI Servers</summary>
-
-A [Web Server Gateway Interface][WSGI] (WSGI) server implements the web server side of the WSGI interface for running
-Python web applications.
-
-#### Why is WSGI necessary?
-
-A traditional web server does not understand or have any way to run Python applications. In the late 1990s, a developer
-named Grisha Trubetskoy
-[came up with an Apache module called mod_python](http://grisha.org/blog/2013/10/25/mod-python-the-long-story/) to
-execute arbitrary Python code. For several years in the late 1990s and early 2000s, Apache configured with mod_python
-ran most Python web applications.
-
-However, mod_python wasn't a standard specification. It was just an implementation that allowed Python code to run on a
-server. As mod_python's development stalled and security vulnerabilities were discovered there was recognition by the
-community that a consistent way to execute Python code for web applications was needed.
-
-Therefore the Python community came up with WSGI as a standard interface that modules and containers could implement.
-WSGI is now the accepted approach for running Python web applications.
-
-![Error loading wsgi-interface.png](./docs/wsgi-interface.png)
-
-As shown in the above diagram, a WSGI server simply invokes a callable object on the WSGI application as defined by the
-[PEP 3333][PEP 3333] standard.
-
-</details>
+> ⚠️⚠️⚠️
+> 
+> The number of worker process MUST be **1** to prevent multiple workers from downloading a HanLP pre-trained model to
+> the same location, which results in error of
+> 
+> ```bash
+> OSError: [Errno 39] Directory not empty: '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210304_135840'
+> -> '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210111_124159'
+> ```
+> 
+> ⚠️⚠️⚠️
 
 Entity Extraction
 -----------------
@@ -178,12 +162,9 @@ graph generator from text**, which leads me to the next approach
 
 
 
-[Flas debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
+[Flask debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
 [Flasgger]: https://github.com/flasgger/flasgger
 
-[PEP 3333]: https://qubitpi.github.io/peps/pep-3333.html
 [Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white
 
 [Rapid API firewall settings]: https://docs.rapidapi.com/docs/security-threat-protection#firewall-settings
-
-[WSGI]: https://www.fullstackpython.com/wsgi-servers.html

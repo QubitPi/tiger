@@ -14,8 +14,3 @@ build/
 .idea/
 *.swp
 *~
-
-# HashiCorp
-.terraform/
-terraform.tfstate
-.terraform.lock.hcl

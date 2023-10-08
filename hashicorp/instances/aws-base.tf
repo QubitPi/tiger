@@ -16,3 +16,7 @@ terraform {
 provider "aws" {
   region = var.aws_deploy_region
 }
+
+data "template_file" "base-init" {
+  template = "${file("../scripts/aws-base-tf-init.sh")}"
+}
