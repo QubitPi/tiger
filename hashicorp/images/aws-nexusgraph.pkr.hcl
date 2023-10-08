@@ -49,7 +49,7 @@ build {
   # Load Nginx config file into AMI image
   provisioner "file" {
     source = "./nginx-nexusgraph-ssl.conf"
-    destination = "/home/ubuntu/nginx-ssl.conf"
+    destination = "/home/ubuntu/nginx.conf"
   }
 
   # Load Theresa executable
