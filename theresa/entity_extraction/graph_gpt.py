@@ -122,8 +122,8 @@ def _transform_desc_to_prompt(knowledge_graph_desc: str) -> str:
     return PROMPT_TEMPLATE.format(knowledge_graph_desc)
 
 
-def entity_extraction(text: str):
-    prompt = _transform_desc_to_prompt(text)
+def entity_extraction(texts: list[str]):
+    prompt = _transform_desc_to_prompt(''.join(texts))
     response = _entity_extraction_via_completion_api(prompt)
     return _convert_to_knowledge_graph_spec(response)
 
