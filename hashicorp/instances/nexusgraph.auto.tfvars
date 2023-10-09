@@ -1,1 +1,0 @@
-nexusgraph_zone_id = "NEXUSGRAPH_ZONE_ID_INJECTED_BY_CI_CD"

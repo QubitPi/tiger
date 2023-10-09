@@ -6,6 +6,8 @@ sudo apt upgrade -y
 
 # Set up Python
 sudo apt-get -y install python3-pip
+pip3 install --upgrade pip
+sudo apt -y install python3.10-venv
 
 python3 --version
 
@@ -15,10 +17,6 @@ cd /home/ubuntu/theresa
 mv ../theresa.tar.gz .
 tar -xf theresa.tar.gz
 rm theresa.tar.gz
-
-pip3 install --upgrade pip
-pip3 install tensorflow
-python3 -m pip install .
 cd /home/ubuntu/
 
 # Install Nginx and load SSL config

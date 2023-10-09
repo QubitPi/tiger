@@ -5,7 +5,6 @@ import hanlp
 
 HanLP = hanlp.load(hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH)
 
-
 def _random_id():
     return "n" + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20)).lower()
 

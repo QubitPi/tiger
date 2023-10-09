@@ -6,11 +6,19 @@ from theresa.entity_extraction.hanlp_ner import entity_extraction
 from theresa.expand.google_knowledge_graph_api import node_expand
 from theresa.neo4j import json_parser
 
+import logging
+
+
 
 def create_app():
     app = Flask(__name__)
     CORS(app)
     app.config.from_envvar("APP_CONFIG_FILE")
+
+    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers.extend(gunicorn_error_logger.handlers)
+    app.logger.setLevel(logging.DEBUG)
+    # app.logger.debug('this will show in the log')
 
     app.config['SWAGGER'] = {
         'title': 'Theresa API',

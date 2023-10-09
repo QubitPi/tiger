@@ -1,7 +1,13 @@
+variable "public_theresa_nginx_config_path" {
+  type =  string
+  sensitive = true
+}
+
 source "amazon-ebs" "theresa-public" {
   ami_name = "theresa-public"
   force_deregister = "true"
   force_delete_snapshot = "true"
+  skip_create_ami = "${var.skip_create_ami}"
 
   instance_type = "t2.large"
   launch_block_device_mappings {
@@ -32,13 +38,13 @@ build {
 
   # Load Flask config file into AMI image
   provisioner "file" {
-    source = "settings.cfg"
+    source = "${var.theresa_settings_config_path}"
     destination = "/home/ubuntu/settings.cfg"
   }
 
   # Load Nginx config file into AMI image
   provisioner "file" {
-    source = "./nginx-public.conf"
+    source = "${var.public_theresa_nginx_config_path}"
     destination = "/home/ubuntu/nginx.conf"
   }
 
@@ -49,6 +55,6 @@ build {
   }
 
   provisioner "shell" {
-    script = "../scripts/base-setup.sh"
+    script = "../scripts/aws-base-pkr-setup.sh"
   }
 }
