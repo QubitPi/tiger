@@ -1,9 +1,9 @@
 import ast
 import json
-import requests
-from requests import Response
-from flask import current_app # https://stackoverflow.com/a/32017603
 
+import requests
+from flask import current_app  # https://stackoverflow.com/a/32017603
+from requests import Response
 from theresa.common import remove_duplicates
 
 PROMPT_TEMPLATE = """

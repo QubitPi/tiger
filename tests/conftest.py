@@ -1,5 +1,7 @@
 import pytest
+
 from theresa import create_app
+
 
 @pytest.fixture
 def app():

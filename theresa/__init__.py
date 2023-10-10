@@ -1,11 +1,12 @@
-from flask_cors import CORS
-from flasgger import Swagger
-from flask import Flask, request, jsonify
-
-from theresa.entity_extraction.hanlp_ner import entity_extraction
-
 import logging
 
+from flasgger import Swagger
+from flask import Flask
+from flask import jsonify
+from flask import request
+from flask_cors import CORS
+
+from theresa.entity_extraction.hanlp_ner import entity_extraction
 
 
 def create_app():
@@ -28,7 +29,7 @@ def create_app():
     def hello():
         return "Success", 200
 
-    @app.route("/entityExtraction", methods = ["POST"])
+    @app.route("/entityExtraction", methods=["POST"])
     def named_entity_extraction():
         """
         Performs entity extraction on a text corpus
