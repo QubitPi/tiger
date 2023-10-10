@@ -1,11 +1,14 @@
-Theresa <sup>![Python Version Badge][Python Version Badge]</sup>
-================================================================
+Theresa <sup>![Python Version Badge](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)</sup>
+=======
 
-- Since this is a private-repo for a single person, documentations are all on this README file
+- Since this is a private-repo by a single person, documentations are all in this pge
 - **The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
   [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does NOT handle caching, auth, or
   request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
   prediction**.
+
+
+
 
 Development
 -----------
@@ -21,7 +24,6 @@ python3 -m venv .venv
 
 ```bash
 python3 -m pip install .
-# pip3 install hanlp[amr,fasttext,full,tf]
 ```
 
 ### 3. Run Webservice Locally in Dev Mode
@@ -32,8 +34,8 @@ flask --app theresa run --debug
 ```
 
 - Note that `APP_CONFIG_FILE` has to be an _absolute_ path.
-- Running locally has [Flask debug mode] turned on
-- Swagger API (using [Flasgger]) is available at http://localhost:5000/apidocs/
+- Running locally has [Flask debug mode](https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode) turned on
+- Swagger API (using [Flasgger](https://github.com/flasgger/flasgger)) is available at http://localhost:5000/apidocs/
 - The endpoints are available at http://127.0.0.1:5000. Example browser query:
 
   ```bash
@@ -73,8 +75,9 @@ CI/CD
   usage can be viewed at https://github.com/settings/billing
 - To protect API from unauthorized use:
 
-  - Rapid API instance uses Nginx to check [Rapid API gateway header][Rapid API firewall settings] so that only Rapid
-    API requests can hit public instance
+  - Rapid API instance uses Nginx to check
+    [Rapid API gateway header](https://docs.rapidapi.com/docs/security-threat-protection#firewall-settings) so that only
+    Rapid API requests can hit public instance
   - Although there is no check between EC2 and its load balancer, the load balancer binds to a Security Group called
     "Paion Data nexusgraph Theresa Load Balancer" whose inbound rules only allows requests from app.nexusgraph.com EC2
     instances
@@ -160,11 +163,40 @@ graph generator from text**, which leads me to the next approach
 
 ## Multi/Multiplex Parser
 
+MLflow
+------
 
+### Entity Extraction
 
-[Flask debug mode]: https://flask.palletsprojects.com/en/latest/quickstart/#debug-mode
-[Flasgger]: https://github.com/flasgger/flasgger
+Follow [Development section](#development) to create virtual environment and run
 
-[Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white
+```bash
+pip3 install -r requirements.txt
+```
 
-[Rapid API firewall settings]: https://docs.rapidapi.com/docs/security-threat-protection#firewall-settings
+```bash
+cd mlflow_models/HanLPner
+python3 HanLPner.py
+```
+
+A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image and run container with
+
+```bash
+cd mlflow_models/models/HanLPner
+mlflow models build-docker --name "entity-extraction"
+
+docker run --rm \
+  --memory=4000m \
+  -p 5001:8080 \
+  -v /abs/path/to/models/HanLPner:/opt/ml/model \
+  -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
+  "entity-extraction"
+```
+
+Example query:
+
+```bash
+curl -X POST -H "Content-Type:application/json; format=pandas-split" \
+  --data '{"columns":["text"],"index":[0],"data":[["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}' \
+  http://127.0.0.1:5001/invocations
+```

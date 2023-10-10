@@ -1,0 +1,2 @@
+mlflow
+hanlp[amr,fasttext,full,tf]

@@ -30,6 +30,10 @@ def _construct_knowledge_graph_spec_link(source: str, target: str, extrapolated_
         }
     }
 
+def _get_hanlp_results(texts: list[str]):
+    # TODO: change to HTTP
+    return HanLP(texts)["srl"]
+
 
 def entity_extraction(texts: list[str]):
     nodes = []
@@ -37,7 +41,7 @@ def entity_extraction(texts: list[str]):
 
     node_name_to_id_map = {}
     link_set = set()
-    for srl_results in HanLP(texts)["srl"]:
+    for srl_results in _get_hanlp_results(texts):
         for srl_result in srl_results:
             subject = None
             verb = None
