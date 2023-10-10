@@ -93,18 +93,6 @@ After developing Theresa, we'll want to make it available publicly to other user
 debugger, and reloader we use for local development should not be used in production. Instead, we use a dedicated
 [WSGI server](#wsgi-servers) listening at port **8000**
 
-> ⚠️⚠️⚠️
-> 
-> The number of worker process MUST be **1** to prevent multiple workers from downloading a HanLP pre-trained model to
-> the same location, which results in error of
-> 
-> ```bash
-> OSError: [Errno 39] Directory not empty: '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210304_135840'
-> -> '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210111_124159'
-> ```
-> 
-> ⚠️⚠️⚠️
-
 Entity Extraction
 -----------------
 
@@ -193,6 +181,18 @@ docker run --rm \
   "entity-extraction"
 ```
 
+> ⚠️⚠️⚠️
+> 
+> The number of worker process MUST be **1** (`--workers=1`) to prevent multiple workers from downloading a HanLP
+> pre-trained model to the same location, which results in runtime error in Docker container. In **native** environment,
+> this error can be
+> 
+> ```bash
+> OSError: [Errno 39] Directory not empty: '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210304_135840'
+> -> '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210111_124159'
+> ```
+> 
+> ⚠️⚠️⚠️
 Example query:
 
 ```bash
