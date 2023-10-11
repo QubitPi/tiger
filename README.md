@@ -201,8 +201,8 @@ Example query:
 
 ```bash
 curl -X POST -H "Content-Type:application/json" \
-  --data '{"dataframe_split": {"columns":["text"],"index":[0],"data":[["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
+  --data '{"dataframe_split": {"columns":["text"], "data":[["我爱中国"], ["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
   http://127.0.0.1:5001/invocations
 ```
 
-https://stackoverflow.com/a/75104855
+[Note the JSON schema of the `--data` value](https://stackoverflow.com/a/75104855)
