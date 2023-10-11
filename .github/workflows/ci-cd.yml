@@ -13,33 +13,33 @@ env:
   HASHICORP_PRODUCT_VERSION: "latest"
 
 jobs:
-#  test:
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        python-version: ["3.10"]
-#    steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#      - name: Install dependencies
-#        run: python3 -m pip install .
-#      - name: Setup tests
-#        run: |
-#          pip3 install '.[test]'
-#      - name: Run all tests
-#        run: |
-#          # "exported" env variables do NOT persist across action steps. So we co-locate them with test command
-#          export APP_CONFIG_FILE=${{ github.workspace }}/tests/settings.test.cfg
-#          pytest
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python3 -m pip install .
+      - name: Setup tests
+        run: |
+          pip3 install '.[test]'
+      - name: Run all tests
+        run: |
+          # "exported" env variables do NOT persist across action steps. So we co-locate them with test command
+          export APP_CONFIG_FILE=${{ github.workspace }}/tests/settings.test.cfg
+          pytest
 
   release:
     name: Release IAM image to AWS and Deploys its instance to EC2
-    # needs: test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
