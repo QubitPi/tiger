@@ -44,4 +44,3 @@ if __name__ == '__main__':
     # Save the MLflow Model
     mlflow_pyfunc_model_path = "../models/HanLPner"
     mlflow.pyfunc.save_model(path=mlflow_pyfunc_model_path, python_model=HanLPner(), conda_env=conda_env)
-

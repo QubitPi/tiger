@@ -156,14 +156,18 @@ MLflow
 
 ### Entity Extraction
 
-Follow [Development section](#development) to create virtual environment and run
-
-```bash
-pip3 install -r requirements.txt
-```
+Create virtual environment and install dependencies:
 
 ```bash
 cd mlflow_models/HanLPner
+python3 -m venv .venv
+. .venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+Generte Model with
+
+```bash
 python3 HanLPner.py
 ```
 
@@ -176,16 +180,16 @@ mlflow models build-docker --name "entity-extraction"
 docker run --rm \
   --memory=4000m \
   -p 5001:8080 \
-  -v /abs/path/to/models/HanLPner:/opt/ml/model \
+  -v /Users/jackjack/Library/CloudStorage/Dropbox/github/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
 ```
 
 > ⚠️⚠️⚠️
 > 
-> The number of worker process MUST be **1** (`--workers=1`) to prevent multiple workers from downloading a HanLP
-> pre-trained model to the same location, which results in runtime error in Docker container. In **native** environment,
-> this error can be
+> The number of gunicorn worker process MUST be **1** (`--workers=1`) to prevent multiple workers from downloading a
+> HanLP pre-trained model to the same location, which results in runtime error in Docker container. In **native**
+> environment, this error can be
 > 
 > ```bash
 > OSError: [Errno 39] Directory not empty: '/root/.hanlp/mtl/close_tok_pos_ner_srl_dep_sdp_con_electra_small_20210304_135840'
@@ -196,7 +200,9 @@ docker run --rm \
 Example query:
 
 ```bash
-curl -X POST -H "Content-Type:application/json; format=pandas-split" \
-  --data '{"columns":["text"],"index":[0],"data":[["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}' \
+curl -X POST -H "Content-Type:application/json" \
+  --data '{"dataframe_split": {"columns":["text"],"index":[0],"data":[["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
   http://127.0.0.1:5001/invocations
 ```
+
+https://stackoverflow.com/a/75104855
