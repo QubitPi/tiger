@@ -165,7 +165,7 @@ python3 -m venv .venv
 pip3 install -r requirements.txt
 ```
 
-Generte Model with
+Generate Model with
 
 ```bash
 python3 HanLPner.py
@@ -180,7 +180,7 @@ mlflow models build-docker --name "entity-extraction"
 docker run --rm \
   --memory=4000m \
   -p 5001:8080 \
-  -v /Users/jackjack/Library/CloudStorage/Dropbox/github/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
+  -v /abs/path/to/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
 ```
