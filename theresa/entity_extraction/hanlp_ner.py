@@ -48,13 +48,13 @@ def _get_hanlp_results(texts: list[str]):
     return [prediction["0"] for prediction in response.json()["predictions"]]
 
 
-def entity_extraction(texts: list[str]):
+def _convert_to_knowledge_graph_spec(model_results):
     nodes = []
     links = []
 
     node_name_to_id_map = {}
     link_set = set()
-    for srl_results in _get_hanlp_results(texts):
+    for srl_results in model_results:
         for srl_result in srl_results:
             subject = None
             verb = None
@@ -103,6 +103,10 @@ def entity_extraction(texts: list[str]):
         "nodes": nodes,
         "links": links
     }
+
+
+def entity_extraction(texts: list[str]):
+    return _convert_to_knowledge_graph_spec(_get_hanlp_results(texts))
 
 
 if __name__ == '__main__':
