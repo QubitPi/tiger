@@ -5,15 +5,15 @@ touch /home/ubuntu/aws-base-tf-init.log
 export AWS_BASE_TF_INIT_LOG=/home/ubuntu/aws-base-tf-init.log
 echo "aws-base-tf-init started executing..."       >>$AWS_BASE_TF_INIT_LOG 2>&1
 
-sudo usermod -aG docker ${USER}
-su - ${USER}
+sudo usermod -aG docker ${USER}                    >>$AWS_BASE_TF_INIT_LOG 2>&1
+su - ${USER}                                       >>$AWS_BASE_TF_INIT_LOG 2>&1
 docker run --detach --rm \
   --memory=4000m \
   -p 5001:8080 \
   -v /home/ubuntu/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
-  "entity-extraction"
-
+  "entity-extraction"                              >>$AWS_BASE_TF_INIT_LOG 2>&1
+echo "HanLP container started"                     >>$AWS_BASE_TF_INIT_LOG 2>&1
 
 sudo nginx -t                                      >>$AWS_BASE_TF_INIT_LOG 2>&1
 sudo nginx -s reload                               >>$AWS_BASE_TF_INIT_LOG 2>&1

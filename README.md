@@ -180,7 +180,7 @@ mlflow models build-docker --name "entity-extraction"
 docker run --rm \
   --memory=4000m \
   -p 5001:8080 \
-  -v /abs/path/to/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
+  -v $NER_MODEL_PATH:/opt/ml/model \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
 ```
