@@ -39,6 +39,7 @@ def _construct_knowledge_graph_spec_link(source: str, target: str, extrapolated_
         }
     }
 
+
 def _remove_duplicates(nodes: list) -> list:
     """
     De-duplicates nodes by node.id and returns a new list of unique nodes.

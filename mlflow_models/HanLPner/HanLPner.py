@@ -1,8 +1,8 @@
-import mlflow.pyfunc
 import hanlp
+import mlflow.pyfunc
+import pandas
 import pandas as pd
 import torch
-import pandas
 import transformers
 
 
@@ -21,6 +21,7 @@ class HanLPner(mlflow.pyfunc.PythonModel):
             texts.append(row["text"])
 
         return pd.Series(self.HanLP(texts)["srl"])
+
 
 if __name__ == '__main__':
     conda_env = {

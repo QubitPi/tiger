@@ -1,10 +1,12 @@
-from unittest import TestCase
-from types import SimpleNamespace
 import json
+from types import SimpleNamespace
+from unittest import TestCase
+
 from theresa.entity_extraction.graph_gpt import _construct_knowledge_graph_spec_link
 from theresa.entity_extraction.graph_gpt import _construct_knowledge_graph_spec_node
 from theresa.entity_extraction.graph_gpt import _convert_to_knowledge_graph_spec
 from theresa.entity_extraction.graph_gpt import _transform_desc_to_prompt
+
 
 class TestGraphGPT(TestCase):
 
