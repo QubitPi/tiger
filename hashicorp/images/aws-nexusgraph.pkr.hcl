@@ -70,14 +70,14 @@ build {
 
   # Load Theresa executable
   provisioner "file" {
-    source = "./theresa.tar.gz"
+    source = "${var.theresa_tar_gz_path}"
     destination = "/home/ubuntu/theresa.tar.gz"
   }
 
   provisioner "shell" {
-    script = "../scripts/aws-base-pkr-setup.sh"
-  }
-  provisioner "shell" {
-    script = "../scripts/aws-nexusgraph-pkr-setup.sh"
+    scripts = [
+      "../scripts/aws-base-pkr-setup.sh",
+      "../scripts/aws-nexusgraph-pkr-setup.sh"
+    ]
   }
 }

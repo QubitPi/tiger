@@ -1,9 +1,6 @@
 import hanlp
 import mlflow.pyfunc
 import pandas
-import pandas as pd
-import torch
-import transformers
 
 
 class HanLPner(mlflow.pyfunc.PythonModel):
@@ -20,7 +17,7 @@ class HanLPner(mlflow.pyfunc.PythonModel):
         for _, row in model_input.iterrows():
             texts.append(row["text"])
 
-        return pd.Series(self.HanLP(texts)["srl"])
+        return pandas.Series(self.HanLP(texts)["srl"])
 
 
 if __name__ == '__main__':
@@ -32,9 +29,9 @@ if __name__ == '__main__':
             {
                 'pip': [
                     'mlflow',
+                    'mlflow-skinny',
+                    'mlflow[extras]',
                     'pandas=={}'.format(pandas.__version__),
-                    'torch=={}'.format(torch.__version__),
-                    'transformers=={}'.format(transformers.__version__),
                     'hanlp[amr, fasttext, full, tf]'
                 ],
             },

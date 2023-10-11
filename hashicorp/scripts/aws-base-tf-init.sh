@@ -1,13 +1,12 @@
 #!/bin/bash
 set -x
+set -e
 
 touch /home/ubuntu/aws-base-tf-init.log
 export AWS_BASE_TF_INIT_LOG=/home/ubuntu/aws-base-tf-init.log
 echo "aws-base-tf-init started executing..."       >>$AWS_BASE_TF_INIT_LOG 2>&1
 
-sudo usermod -aG docker ${USER}                    >>$AWS_BASE_TF_INIT_LOG 2>&1
-su - ${USER}                                       >>$AWS_BASE_TF_INIT_LOG 2>&1
-docker run --detach --rm \
+sudo docker run --detach --rm \
   --memory=4000m \
   -p 5001:8080 \
   -v /home/ubuntu/theresa/mlflow_models/models/HanLPner:/opt/ml/model \

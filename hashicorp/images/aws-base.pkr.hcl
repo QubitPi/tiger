@@ -8,6 +8,11 @@ variable "theresa_settings_config_path" {
   sensitive = true
 }
 
+variable "theresa_tar_gz_path" {
+  type =  string
+  sensitive = true
+}
+
 variable "skip_create_ami" {
   type =  bool
   sensitive = true
