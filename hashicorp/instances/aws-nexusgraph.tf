@@ -33,11 +33,11 @@ resource "aws_instance" "paion-data-nexusgraph-theresa" {
   user_data = "${data.template_file.base-init.rendered}"
 }
 
-resource "aws_route53_record" "theresa-nexusgraph-com" {
-  zone_id         = var.nexusgraph_zone_id
-  name            = "theresa.nexusgraph.com"
-  type            = "A"
-  ttl             = 300
-  records         = [aws_instance.paion-data-nexusgraph-theresa.public_ip]
-  allow_overwrite = true
-}
+#resource "aws_route53_record" "theresa-nexusgraph-com" {
+#  zone_id         = var.nexusgraph_zone_id
+#  name            = "theresa.nexusgraph.com"
+#  type            = "A"
+#  ttl             = 300
+#  records         = [aws_instance.paion-data-nexusgraph-theresa.public_ip]
+#  allow_overwrite = true
+#}

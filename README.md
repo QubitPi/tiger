@@ -1,14 +1,11 @@
 Theresa <sup>![Python Version Badge](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)</sup>
 =======
 
-- Since this is a private-repo by a single person, documentations are all in this pge
+- Since this is a private-repo by a single person, documentations are all in this page
 - **The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
   [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does NOT handle caching, auth, or
   request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
   prediction**.
-
-
-
 
 Development
 -----------
@@ -197,6 +194,7 @@ docker run --rm \
 > ```
 > 
 > ⚠️⚠️⚠️
+
 Example query:
 
 ```bash
