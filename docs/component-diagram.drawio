@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-14T12:59:07.255Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="wNu6b2BO5HWKaZcqJy7z" version="22.0.4" type="device">
+<mxfile host="app.diagrams.net" modified="2023-10-14T13:02:31.383Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="YzbaEsrGVgHigBOTdcN1" version="22.0.4" type="device">
   <diagram name="Page-1" id="xupsyyIqZQM46UnI26As">
     <mxGraphModel dx="2156" dy="830" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -41,7 +41,7 @@
           <mxGeometry x="10" y="101.25" width="102.5" height="102.5" as="geometry" />
         </mxCell>
         <mxCell id="MFwdjal6pe0kKkIJQNHX-3" value="https://theresa.nexusgraph.com" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Ubuntu;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="280" y="90" width="60" height="30" as="geometry" />
+          <mxGeometry x="270" y="92.5" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="lJJ798S1BOmMn_kfDIAu-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;fontFamily=Ubuntu;fontStyle=1;strokeWidth=3;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=classic;startFill=1;" parent="1" source="MFwdjal6pe0kKkIJQNHX-4" target="lJJ798S1BOmMn_kfDIAu-6" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -70,6 +70,9 @@
         </mxCell>
         <mxCell id="JT-d3Eq-Ps9E_rg-RcLf-3" value="&lt;b&gt;&lt;font face=&quot;Ubuntu&quot;&gt;HTTP&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="522.5" y="290" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JT-d3Eq-Ps9E_rg-RcLf-4" value="&lt;font face=&quot;Ubuntu&quot;&gt;&lt;b&gt;Service Discovery&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="240" y="122.5" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
