@@ -50,7 +50,7 @@ build {
 
   # Load Theresa executable
   provisioner "file" {
-    source = "./theresa.tar.gz"
+    source = "${var.theresa_tar_gz_path}"
     destination = "/home/ubuntu/theresa.tar.gz"
   }
 

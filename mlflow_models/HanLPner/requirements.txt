@@ -1,0 +1,4 @@
+mlflow
+mlflow-skinny
+mlflow[extras]
+hanlp[amr,fasttext,full,tf]
