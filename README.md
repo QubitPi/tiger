@@ -2,10 +2,12 @@ Theresa <sup>![Python Version Badge](https://img.shields.io/badge/Python-3.10-br
 =======
 
 - Since this is a private-repo by a single person, documentations are all in this page
-- **The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
+- The principle of Theresa is **SIMPLE, SIMPLE, and SIMPLE**. Theresa is a machine learning service deployed as a
   [separation-of-concern](https://stackoverflow.com/a/59492509) microservice. It does NOT handle caching, auth, or
   request pre-processing or response post-processing. **It simply loads some ML model, performs inference, and returns
   prediction**.
+
+![Error loading component-diagram.png](./docs/component-diagram.png)
 
 Development
 -----------
@@ -64,25 +66,9 @@ coverage html  # open htmlcov/index.html in a browser
 CI/CD
 -----
 
-![Error loadging deployment.png](./docs/deployment.png)
-
-- [Diagram source code](./docs/deployment.drawio)
 - This is a private repo on GitHub, which offers only 2000 min GitHub Action minutes. Within the 2000-min quota,
   [CI/CD through GitHub Action](.github/workflows/ci-cd.yml) can be used. The quota resets every month and current-month
   usage can be viewed at https://github.com/settings/billing
-- To protect API from unauthorized use:
-
-  - Rapid API instance uses Nginx to check
-    [Rapid API gateway header](https://docs.rapidapi.com/docs/security-threat-protection#firewall-settings) so that only
-    Rapid API requests can hit public instance
-  - Although there is no check between EC2 and its load balancer, the load balancer binds to a Security Group called
-    "Paion Data nexusgraph Theresa Load Balancer" whose inbound rules only allows requests from app.nexusgraph.com EC2
-    instances
-
-- After [CI/CD](./.github/workflows/ci-cd.yml) completes, we still need to
-
-  - Manually bind EC2 instances to nexusgraph LB target groups and delete old instances
-  - Manually update Base URL on RapidAPI
 
 ### Running in Production
 
