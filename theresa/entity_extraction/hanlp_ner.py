@@ -31,22 +31,25 @@ def _get_hanlp_results(texts: list[str]):
     import requests
     import json
 
+    results = []
+
     url = "http://127.0.0.1:5001/invocations"
 
-    payload = json.dumps({
-        "dataframe_split": {
-            "columns": ["text"],
-            "data": [[text] for text in texts]
+    for text in texts:
+        payload = json.dumps({
+            "dataframe_split": {
+                "columns": ["text"],
+                "data": [[text]]
+            }
+        })
+        headers = {
+            'Content-Type': 'application/json'
         }
-    })
-    headers = {
-        'Content-Type': 'application/json'
-    }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload)
+        results.extend(response.json()["predictions"][0]["0"])
 
-    return [prediction["0"] for prediction in response.json()["predictions"]]
-
+    return [results]
 
 def _convert_to_knowledge_graph_spec(model_results):
     nodes = []

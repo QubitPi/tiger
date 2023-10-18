@@ -157,7 +157,7 @@ python3 HanLPner.py
 A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image and run container with
 
 ```bash
-cd mlflow_models/models/HanLPner
+cd ../../mlflow_models/models/HanLPner
 mlflow models build-docker --name "entity-extraction"
 
 docker run --rm \
