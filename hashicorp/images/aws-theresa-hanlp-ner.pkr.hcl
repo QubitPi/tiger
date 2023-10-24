@@ -1,10 +1,5 @@
-variable "public_theresa_nginx_config_path" {
-  type =  string
-  sensitive = true
-}
-
-source "amazon-ebs" "theresa-public" {
-  ami_name = "theresa-public"
+source "amazon-ebs" "theresa-hanlp-ner" {
+  ami_name = "theresa-hanlp-ner"
   force_deregister = "true"
   force_delete_snapshot = "true"
   skip_create_ami = "${var.skip_create_ami}"
@@ -31,22 +26,10 @@ source "amazon-ebs" "theresa-public" {
 }
 
 build {
-  name = "install-theresa-public"
+  name = "install-theresa-hanlp-ner"
   sources = [
-    "source.amazon-ebs.theresa-public"
+    "source.amazon-ebs.theresa-hanlp-ner"
   ]
-
-  # Load Flask config file into AMI image
-  provisioner "file" {
-    source = "${var.theresa_settings_config_path}"
-    destination = "/home/ubuntu/settings.cfg"
-  }
-
-  # Load Nginx config file into AMI image
-  provisioner "file" {
-    source = "${var.public_theresa_nginx_config_path}"
-    destination = "/home/ubuntu/nginx.conf"
-  }
 
   # Load Theresa executable
   provisioner "file" {
@@ -55,6 +38,8 @@ build {
   }
 
   provisioner "shell" {
-    script = "../scripts/aws-base-pkr-setup.sh"
+    scripts = [
+      "../scripts/aws-theresa-hanlp-ner-setup.sh"
+    ]
   }
 }

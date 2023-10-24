@@ -9,9 +9,6 @@ on:
     branches:
     - master
 
-env:
-  HASHICORP_PRODUCT_VERSION: "latest"
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,44 +23,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: python3 -m pip install .
-      - name: Setup tests
-        run: pip3 install '.[test]'
       - name: Run all tests
         run: |
-          # "exported" env variables do NOT persist across action steps. So we co-locate them with test command
-          export APP_CONFIG_FILE=${{ github.workspace }}/tests/settings.test.cfg
-          pytest
-
-  release:
-    name: Release IAM image to AWS and Deploys its instance to EC2
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Load Flask App Config
-        run: echo '${{ secrets.FLASK_SETTINGS_FILE }}' > ${{ github.workspace }}/../settings.cfg
-      - name: Load SSL Certificates
-        run: |
-          echo '${{ secrets.NEXUSGRAPH_THERESA_SSL_CERT }}' > ${{ github.workspace }}/../nexusgraph_theresa_ssl.crt
-          echo '${{ secrets.NEXUSGRAPH_THERESA_SSL_CERT_KEY }}' > ${{ github.workspace }}/../nexusgraph_theresa_ssl.key
-      - name: Load Nginx Configs
-        run: |
-          echo '${{ secrets.NEXUSGRAPH_THERESA_NGINX_CONFIG_FILE }}' > ${{ github.workspace }}/../nexusgraph_theresa_nginx.conf
-          echo '${{ secrets.PUBLIC_THERESA_NGINX_CONFIG_FILE }}' > ${{ github.workspace }}/../public_theresa_nginx.conf
-      - name: Load Packer variable file
-        run: echo '${{ secrets.HASHICORP_PACKER_AUTO_VAR_FILE }}' > hashicorp/images/aws.auto.pkrvars.hcl
-      - name: Load Terraform variable file
-        run: echo '${{ secrets.HASHICORP_TERRAFORM_AUTO_VAR_FILE }}' > hashicorp/instances/aws.auto.tfvars
-      - name: Load Theresa executable
-        run: |
-          cd ../
-          tar --exclude-vcs -czvf theresa.tar.gz theresa
-      - name: Publish Theresa AMI image and deploy it to EC2 through HashiCorp
-        uses: QubitPi/aergia@master
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          python3 mlflow_models/HanLPner/parser.py
