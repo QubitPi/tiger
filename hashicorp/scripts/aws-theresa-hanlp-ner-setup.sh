@@ -18,10 +18,6 @@ cd /home/ubuntu
 tar -xvf theresa.tar.gz
 rm theresa.tar.gz
 
-# Install Nginx and load SSL config
-sudo apt install -y nginx
-sudo mv /home/ubuntu/nginx.conf /etc/nginx/sites-enabled/default
-
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg
