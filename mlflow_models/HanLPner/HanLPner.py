@@ -36,7 +36,7 @@ if __name__ == '__main__':
                 ],
             },
         ],
-        'name': 'transformers_qa_env'
+        'name': 'HanLPner'
     }
 
     # Save the MLflow Model

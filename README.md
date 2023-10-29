@@ -34,7 +34,7 @@ source ~/.bashrc # load $NER_MODEL_PATH
 docker run --rm \
   --memory=4000m \
   -p 5001:8080 \
-  -v $NER_MODEL_PATH:/opt/ml/model \
+  -v /abs/path/to/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
   -e PYTHONPATH="/opt/ml/model:$PYTHONPATH" \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
@@ -89,4 +89,19 @@ def _get_hanlp_results(texts: list[str]):
         results.extend(response.json()["predictions"][0]["0"])
 
     return [results]
+```
+
+### Topological Sort
+
+Generate Model with
+
+```bash
+cd mlflow_models/Planner
+python3 Planner.py
+```
+
+```bash
+curl -X POST -H "Content-Type:application/json" \
+  --data '{"dataframe_split": {"columns":["text"], "data":[["{\"D\": [\"B\", \"C\"], \"C\": [\"A\"], \"B\": [\"A\"]}"]]}}' \
+  http://localhost:5002/invocations
 ```
