@@ -53,7 +53,7 @@ docker run --rm \
 > 
 > ⚠️⚠️⚠️
 
-Example query:
+Example query (or [in Python](https://huggingface.co/spaces/QubitPi/named-entity-recognition/blob/main/app.py)):
 
 ```bash
 curl -X POST -H "Content-Type:application/json" \
@@ -62,34 +62,6 @@ curl -X POST -H "Content-Type:application/json" \
 ```
 
 [Note the JSON schema of the `--data` value](https://stackoverflow.com/a/75104855)
-
-Or in Python
-
-```python
-def _get_hanlp_results(texts: list[str]):
-    import requests
-    import json
-
-    results = []
-
-    url = "http://127.0.0.1:5001/invocations"
-
-    for text in texts:
-        payload = json.dumps({
-            "dataframe_split": {
-                "columns": ["text"],
-                "data": [[text]]
-            }
-        })
-        headers = {
-            'Content-Type': 'application/json'
-        }
-
-        response = requests.request("POST", url, headers=headers, data=payload)
-        results.extend(response.json()["predictions"][0]["0"])
-
-    return [results]
-```
 
 ### Topological Sort
 
