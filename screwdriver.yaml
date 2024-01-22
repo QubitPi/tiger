@@ -1,0 +1,24 @@
+---
+jobs:
+  main:
+    requires: [~pr, ~commit]
+    template: QubitPi/ml-model-release-definition-template-mlflow-docker@latest
+    steps:
+      - build-ml-models: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/QubitPi/hashicorp-aws/master/auxiliary/scripts/install-python-310.sh)"
+
+          cd mlflow_models/HanLPner
+          python3 -m venv .venv
+          . .venv/bin/activate
+          pip3 install -r requirements.txt
+
+          python3 HanLPner.py
+          cd ../../
+
+          cp mlflow_models/HanLPner/parser.py mlflow_models/models/HanLPner/
+          echo "8080" > mlflow_models/models/HanLPner/PORT
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_WS_PKRVARS_HCL
+      - AWS_WS_TFVARS
