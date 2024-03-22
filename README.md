@@ -23,10 +23,6 @@ python3 HanLPner.py
 
 A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image and run container with
 
-> [!TIP]
-> If `docker.errors.DockerException: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))`
-> error is seen, refer to https://forums.docker.com/t/docker-errors-dockerexception-error-while-fetching-server-api-version-connection-aborted-filenotfounderror-2-no-such-file-or-directory-error-in-python/135637/5
-
 ```bash
 cd ../../mlflow_models/models/HanLPner
 mlflow models build-docker --name "entity-extraction"
@@ -40,6 +36,10 @@ docker run --rm \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
 ```
+
+> [!TIP]
+> If `docker.errors.DockerException: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))`
+> error is seen, refer to https://forums.docker.com/t/docker-errors-dockerexception-error-while-fetching-server-api-version-connection-aborted-filenotfounderror-2-no-such-file-or-directory-error-in-python/135637/5
 
 > [!WARNING]
 > The number of gunicorn worker process MUST be **1** (`--workers=1`) to prevent multiple workers from downloading a
@@ -61,7 +61,8 @@ curl -X POST -H "Content-Type:application/json" \
 
 [Note the JSON schema of the `--data` value](https://stackoverflow.com/a/75104855)
 
-#### Deployment
+Deployments
+-----------
 
 > [!CAUTION]
 > [Screwdriver](./screwdriver.yaml) MUST NOT auto-register to Kong because container startup takes time in a scale of
@@ -89,18 +90,3 @@ curl -X POST -H "Content-Type:application/json" \
 >   --data '{"dataframe_split": {"columns":["text"], "data":[["我爱中国"], ["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年  来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
 >   https://${KONG_PUBLIC_DNS}/${ROUTE_NAME}
 > ```
-
-### Topological Sort
-
-Generate Model with
-
-```bash
-cd mlflow_models/Planner
-python3 Planner.py
-```
-
-```bash
-curl -X POST -H "Content-Type:application/json" \
-  --data '{"dataframe_split": {"columns":["text"], "data":[["{\"D\": [\"B\", \"C\"], \"C\": [\"A\"], \"B\": [\"A\"]}"]]}}' \
-  http://localhost:5002/invocations
-```
