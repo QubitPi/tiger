@@ -1,10 +1,118 @@
-Theresa <sup>![Python Version Badge](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)</sup>
+Theresa
 =======
 
-MLflow
-------
+![Python Version Badge](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)
 
-### Entity Extraction
+ASR (Automatic Speech Recognition)
+----------------------------------
+
+### ASR REST API for [Frontend Dev](https://github.com/paion-data/dental-llm-web-app) & Testing
+
+![Error loading ./img/frontend-dev-design.png](./img/frontend-dev-design.png)
+
+- [openai/whisper](https://huggingface.co/spaces/openai/whisper)
+
+  - This is an un-fine tuned official model
+  - [QubitPi backup](https://huggingface.co/spaces/QubitPi/whisper)
+
+- The reason is to completely hide confidential technology and offers a consistent API layer 
+
+#### Setup
+
+```console
+cd test_models
+python3 -m venv .venv
+. .venv/bin/activate
+pip3 install -r asr/requirements.txt
+```
+
+#### Start Prod Server
+
+```console
+gunicorn \
+  -w 4 \
+  -b 0.0.0.0 \
+  --timeout 600 \
+  --limit-request-line 0 \
+  --log-file asr/theresa.log \
+  --log-level DEBUG \
+  'asr:create_app()'
+```
+
+#### Example Request - Transcribing Audio
+
+> [!TIP]
+>
+> This curl was generated from Postman. It's very helpful to
+> [make it work on Postman](https://galaxyofai.com/how-to-send-audio-files-to-flask-api-using-postman/) and have it
+> generate curl for us
+
+```console
+curl --location 'localhost:8000/asr' \
+--form 'audio=@"/abs/path/to/test.mp3"'
+```
+
+
+
+
+
+
+
+
+ASR
+---
+
+Setup
+-----
+
+```console
+python3 -m venv .venv
+. .venv/bin/activate
+pip3 install torch torchvision torchaudio
+```
+
+### Fine-Tuning Whisper For Chinese ASR with 🤗 Transformers
+
+#### Loading WhisperFeatureExtractor
+
+Speech is represented by a 1-dimensional array that varies with time. The value of the array at any given time step is
+the signal's amplitude at that point. From the amplitude information alone, we can reconstruct the frequency spectrum of
+the audio and recover all acoustic features.
+
+Since speech is continuous, it contains an infinite number of amplitude values. This poses problems for computer devices
+which expect finite arrays. Thus, training should discretize speech signal by sampling values from our signal at fixed
+time steps. The interval with which we sample our audio is known as the *sampling rate* and is usually measured in
+samples/sec or Hertz (Hz). Sampling with a higher sampling rate results in a better approximation of the continuous
+speech signal, but also requires storing more values per second.
+
+It is crucial that we **match the sampling rate of our audio inputs to the sampling rate expected by our model**, as
+audio signals with different sampling rates have very different distributions. Audio samples should only ever be
+processed with the correct sampling rate. Failing to do so can lead to unexpected results! For instance, taking an audio
+sample with a sampling rate of 16kHz and listening to it with a sampling rate of 8kHz will make the audio sound as
+though it's in half-speed. In the same way, passing audio with the wrong sampling rate can falter an ASR model that
+expects one sampling rate and receives another. The Whisper feature extractor expects audio inputs with a sampling rate
+of 16kHz, so we need to match our inputs to this value. We don't want to inadvertently train an ASR system on
+slow-motion speech!
+
+The Whisper feature extractor performs 2 operations.
+
+1. It first pads/truncates a batch of audio samples such that all samples have an input length of 30s. Samples shorter
+   than 30s are padded to 30s by appending zeros to the end of the sequence (zeros in an audio signal corresponding to
+   no signal or silence). Samples longer than 30s are truncated to 30s. Since all elements in the batch are
+   padded/truncated to a maximum length in the input space, we don't require an attention mask when forwarding the audio
+   inputs to the Whisper model. Whisper is unique in this regard - with most audio models, we can expect to provide an
+   attention mask that details where sequences have been padded, and thus where they should be ignored in the
+   self-attention mechanism. Whisper is trained to operate without an attention mask and infer directly from the speech
+   signals where to ignore the inputs.
+2. The second operation that the Whisper feature extractor performs is converting the padded audio arrays to log-Mel
+   spectrograms. These spectrograms are a visual representation of the frequencies of a signal, rather like a Fourier
+   transform. An example spectrogram is shown below. Along the ***y***-axis are the Mel channels, which correspond to
+   particular frequency bins. Along the ***x***-axis is time. The colour of each pixel corresponds to the log-intensity
+   of that frequency bin at a given time. The log-Mel spectrogram is the form of input expected by the Whisper model.
+
+
+Entity Extraction
+-----------------
 
 Create virtual environment and install dependencies:
 
