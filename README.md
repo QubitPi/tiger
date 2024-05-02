@@ -6,51 +6,7 @@ Theresa
 ASR (Automatic Speech Recognition)
 ----------------------------------
 
-### ASR REST API for [Frontend Dev](https://github.com/paion-data/dental-llm-web-app) & Testing
-
-![Error loading ./img/frontend-dev-design.png](./img/frontend-dev-design.png)
-
-- [openai/whisper](https://huggingface.co/spaces/openai/whisper)
-
-  - This is an un-fine tuned official model
-  - [QubitPi backup](https://huggingface.co/spaces/QubitPi/whisper)
-
-- The reason is to completely hide confidential technology and offers a consistent API layer 
-
-#### Setup
-
-```console
-cd test_models
-python3 -m venv .venv
-. .venv/bin/activate
-pip3 install -r asr/requirements.txt
-```
-
-#### Start Prod Server
-
-```console
-gunicorn \
-  -w 4 \
-  -b 0.0.0.0 \
-  --timeout 600 \
-  --limit-request-line 0 \
-  --log-file asr/theresa.log \
-  --log-level DEBUG \
-  'asr:create_app()'
-```
-
-#### Example Request - Transcribing Audio
-
-> [!TIP]
->
-> This curl was generated from Postman. It's very helpful to
-> [make it work on Postman](https://galaxyofai.com/how-to-send-audio-files-to-flask-api-using-postman/) and have it
-> generate curl for us
-
-```console
-curl --location 'localhost:8000/asr' \
---form 'audio=@"/abs/path/to/test.mp3"'
-```
+- [asr-test.paion-data.dev](./test_models/asr)
 
 
 
