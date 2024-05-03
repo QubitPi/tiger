@@ -1,56 +1,78 @@
 import logging
+import time
+from functools import wraps
 
 from flasgger import Swagger
 from flask import Flask
-from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
 import os
 
-from gradio_client import Client
-
-
-def __inference_by_whisper_space():
+def __inference_by_whisper_space(audio_path):
     """
     Inferencing using https://huggingface.co/spaces/openai/whisper.
 
     supports wider variety of audio file types, including .wav, and .mp3
 
+    :param audio_path:  The local audio file path to transcribe
+
     :return: The transcribed audio text in string
     """
-    f = request.files['audio']
-    f.save(f.filename)
+    from gradio_client import Client
 
     client = Client("https://openai-whisper.hf.space/")
-    result = client.predict(f.filename, "transcribe", api_name="/predict")
-
-    os.remove(f.filename)
+    result = client.predict(audio_path, "transcribe", api_name="/predict")
 
     return result
 
 
-def __inference_by_speech_recognition():
+def __inference_by_speech_recognition(audio_path):
     """
     Inferencing using https://github.com/Uberi/speech_recognition
 
     Supports inferencing beyond whisper, but audio file type is more restricted - support .wav but not .mp3
 
+    :param audio_path:  The local audio file path to transcribe
+
     :return: The transcribed audio text in string
     """
     import speech_recognition as sr
 
-    f = request.files['audio']
-    f.save(f.filename)
-
     r = sr.Recognizer()
 
-    with sr.AudioFile(f.filename) as source:
+    with sr.AudioFile(audio_path) as source:
         audio = r.record(source)
 
-    os.remove(f.filename)
-
     return r.recognize_whisper(audio_data=audio, language="zh")
+
+
+def random_filename(original_filename: str):
+    return str(hash((original_filename, time.time())))
+
+def with_uploaded_file(f):
+    """
+    Extracts uploaded file from HTTP request, saves the file to a random path, executes route logic, and always cleans
+    up the file.
+
+    See https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/ for more details
+
+    :param f:  The route logic function
+    :return:  The decorated route logic function with common file logics
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        uploaded_file = request.files['audio']
+        file_path = random_filename(uploaded_file.filename)
+        uploaded_file.save(file_path)
+        kwargs["audio_path"] = file_path
+
+        try:
+            return f(*args, **kwargs)
+        finally:
+            os.remove(file_path)
+
+    return decorated_function
 
 
 def create_app():
@@ -73,11 +95,13 @@ def create_app():
         return "Success", 200
 
     @app.route("/model1", methods=["POST"])
-    def model1():
-        return __inference_by_whisper_space()
+    @with_uploaded_file
+    def model1(**kwargs):
+        return __inference_by_whisper_space(kwargs["audio_path"])
 
     @app.route("/model2", methods=["POST"])
-    def model2():
-        return __inference_by_speech_recognition()
+    @with_uploaded_file
+    def model2(**kwargs):
+        return __inference_by_speech_recognition(kwargs["audio_path"])
 
     return app
