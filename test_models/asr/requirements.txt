@@ -1,4 +1,9 @@
 gradio_client
+
+SpeechRecognition
+numpy
+SpeechRecognition[whisper-local]
+
 flask
 gunicorn
 requests

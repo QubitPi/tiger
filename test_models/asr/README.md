@@ -3,10 +3,15 @@ ASR REST API for [Frontend Dev](https://github.com/paion-data/dental-llm-web-app
 
 ![Error loading frontend-dev-design.png](../../img/frontend-dev-design.png)
 
-- [openai/whisper](https://huggingface.co/spaces/openai/whisper)
+- 3 "models" are offered in this API
 
-  - This is an un-fine tuned official model
-  - [QubitPi backup](https://huggingface.co/spaces/QubitPi/whisper)
+  1. [openai/whisper](https://huggingface.co/spaces/openai/whisper)
+
+     - This is an un-fine tuned official model
+     - [QubitPi backup](https://huggingface.co/spaces/QubitPi/whisper)
+
+  2. [SpeechRecognition Python Library (Whisper recognizer)](https://github.com/QubitPi/speech_recognition)
+  3. **Beta-testing trained model** (Developing...)
 
 - The reason is to completely hide confidential technology and offers a consistent API layer 
 
@@ -43,8 +48,7 @@ gunicorn \
 > generate curl for us
 
 ```console
-curl --location 'localhost:8000/asr' \
---form 'audio=@"/abs/path/to/test.mp3"'
+curl --location 'localhost:8000/model1' --form 'audio=@"/abs/path/to/test.mp3"'
 ```
 
 #### Deployment (Manual)
