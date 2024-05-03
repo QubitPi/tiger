@@ -51,6 +51,14 @@ gunicorn \
 curl --location 'localhost:8000/model1' --form 'audio=@"/abs/path/to/test.mp3"'
 ```
 
+```console
+curl --location 'localhost:8000/model2' --form 'audio=@"/abs/path/to/test.wav"'
+```
+
+> [!TIP]
+> 
+> Model 2 has more restriction on file type. It supports .wav but not .mp3
+
 #### Deployment (Manual)
 
 > [!WARNING]
