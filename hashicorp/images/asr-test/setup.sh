@@ -22,10 +22,10 @@ sudo mv /home/ubuntu/nginx.conf /etc/nginx/sites-enabled/default
 # ASR inferencing takes lots of time. We will need to prevent Nginx time-out with the following
 # https://stackoverflow.com/a/54605177
 sudo touch /etc/nginx/conf.d/timeout.conf
-echo "proxy_connect_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
-echo "proxy_send_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
-echo "proxy_read_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
-echo "send_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
+sudo echo "proxy_connect_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
+sudo echo "proxy_send_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
+sudo echo "proxy_read_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
+sudo echo "send_timeout 6000;" >> /etc/nginx/conf.d/timeout.conf
 
 # Setup Flask
 python3 -m venv .venv
