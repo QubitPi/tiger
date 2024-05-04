@@ -43,10 +43,14 @@ build {
     destination = "/home/ubuntu/privkey.pem"
   }
 
-  # Load Nginx config file into AMI image
+  # Load Nginx config files into AMI image
   provisioner "file" {
     source = "nginx.conf"
     destination = "/home/ubuntu/nginx.conf"
+  }
+  provisioner "file" {
+    source = "timeout.conf"
+    destination = "/home/ubuntu/timeout.conf"
   }
 
   # Load flask app into AMI image
