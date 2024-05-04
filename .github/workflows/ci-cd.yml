@@ -88,12 +88,40 @@ jobs:
             exit 1
           fi
 
-  slack-notification:
+  deployment:
+    needs: integration-tests
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    outputs:
+      outcome: ${{ job.status }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to AWS
+        uses: QubitPi/hashicorp-aws@master
+        with:
+          packer-dir: hashicorp/images/asr-test
+          terraform-dir: hashicorp/instances/asr-test
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+  slack-notification-pr:
     name: Send Slack Notification
-    if: ${{ always() }}
+    if: github.ref != 'refs/heads/master'
     needs: integration-tests
     uses: QubitPi/hashicorp-aws/.github/workflows/slack-notification.yml@master
     with:
       job-status: ${{ needs.integration-tests.outputs.outcome }}
+    secrets:
+      slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  slack-notification-master:
+    name: Send Slack Notification
+    if: github.ref == 'refs/heads/master'
+    needs: deployment
+    uses: QubitPi/hashicorp-aws/.github/workflows/slack-notification.yml@master
+    with:
+      job-status: ${{ needs.deployment.outputs.outcome }}
     secrets:
       slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
