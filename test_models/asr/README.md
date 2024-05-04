@@ -29,6 +29,7 @@ pip3 install -r asr/requirements.txt
 ##### Start Prod Server
 
 ```console
+touch asr/theresa.log
 gunicorn \
   -w 4 \
   -b 0.0.0.0 \
