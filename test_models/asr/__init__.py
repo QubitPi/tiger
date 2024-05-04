@@ -85,7 +85,7 @@ def create_app():
     app.logger.setLevel(logging.DEBUG)
 
     app.config['SWAGGER'] = {
-        'title': 'Whisper ASR API',
+        'title': 'Paion Automatic Speech Recognition Test API',
         'openapi': '3.0.2'
     }
     Swagger(app)
