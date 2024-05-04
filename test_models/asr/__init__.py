@@ -22,10 +22,7 @@ def __inference_by_whisper_space(audio_path):
     from gradio_client import Client
 
     client = Client("https://openai-whisper.hf.space/")
-    result = client.predict(audio_path, "transcribe", api_name="/predict")
-
-    return result
-
+    return client.predict(audio_path, "transcribe", api_name="/predict")
 
 def __inference_by_speech_recognition(audio_path):
     """
@@ -85,7 +82,7 @@ def create_app():
     app.logger.setLevel(logging.DEBUG)
 
     app.config['SWAGGER'] = {
-        'title': 'Paion Automatic Speech Recognition Test API',
+        'title': '派昂科技自动语音识别测试 API',
         'openapi': '3.0.2'
     }
     Swagger(app)
@@ -97,11 +94,43 @@ def create_app():
     @app.route("/model1", methods=["POST"])
     @with_uploaded_file
     def model1(**kwargs):
+        """
+        使用 1 号基础模型将一段音频转译成文字格式。
+        ---
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  audio:
+                    type: string
+                    format: binary
+        responses:
+          200:
+            description: Success
+        """
         return __inference_by_whisper_space(kwargs["audio_path"])
 
     @app.route("/model2", methods=["POST"])
     @with_uploaded_file
     def model2(**kwargs):
+        """
+        使用 2 号基础模型将一段音频转译成文字格式。
+        ---
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  audio:
+                    type: string
+                    format: binary
+        responses:
+          200:
+            description: Success
+        """
         return __inference_by_speech_recognition(kwargs["audio_path"])
 
     return app
