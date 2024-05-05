@@ -82,7 +82,7 @@ def create_app():
     app.logger.setLevel(logging.DEBUG)
 
     app.config['SWAGGER'] = {
-        'title': '派昂科技自动语音识别测试 API',
+        'title': 'Paion Data ASR Test API',
         'openapi': '3.0.2'
     }
     Swagger(app)
