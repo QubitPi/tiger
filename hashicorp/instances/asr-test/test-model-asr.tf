@@ -33,7 +33,7 @@ data "aws_ami" "theresa-test-model-asr" {
 
 resource "aws_instance" "theresa-test-model-asr" {
   ami = "${data.aws_ami.theresa-test-model-asr.id}"
-  instance_type = "t2.micro"
+  instance_type = "t2.large"
 
   tags = {
     Name = "Paion Data Dev ASR"

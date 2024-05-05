@@ -13,7 +13,13 @@ source "amazon-ebs" "theresa-test-model-asr" {
   force_delete_snapshot = "true"
 
   region = "us-west-1"
-  instance_type = "t2.micro"
+  instance_type = "t2.large"
+  launch_block_device_mappings {
+    device_name           = "/dev/sda1"
+    volume_size           = 60
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
 
   source_ami_filter {
     filters = {
