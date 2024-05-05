@@ -88,8 +88,3 @@ terraform apply -auto-approve
 > [!TIP]
 >
 > Healthcheck: https://asr-test.paion-data.dev/healthcheck
-> Example inferencing:
-> 
-> ```console
-> curl --location 'https://asr-test.paion-data.dev/asr' --form 'audio=@"/abs/path/to/test.mp3"'
-> ```
