@@ -6,6 +6,7 @@ Theresa
 ASR (Automatic Speech Recognition)
 ----------------------------------
 
+- [whisper](./mlflow_models/whisper)
 - [asr-test.paion-data.dev](./test_models/asr)
 
 
