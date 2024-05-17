@@ -55,8 +55,8 @@ build {
     destination = "/home/ubuntu/nginx.conf"
   }
   provisioner "file" {
-    source = "timeout.conf"
-    destination = "/home/ubuntu/timeout.conf"
+    source = "custom.conf"
+    destination = "/home/ubuntu/custom.conf"
   }
 
   # Load flask app into AMI image
