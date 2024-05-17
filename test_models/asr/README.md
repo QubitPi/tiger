@@ -17,7 +17,7 @@ ASR REST API for [Frontend Dev](https://github.com/paion-data/dental-llm-web-app
 
 #### Development
 
-- Swagger can only be accessed by me
+- Swagger [can only be accessed by me](https://github.com/QubitPi/theresa/blob/master/hashicorp/images/asr-test/nginx.conf)
 
 ##### Setup
 

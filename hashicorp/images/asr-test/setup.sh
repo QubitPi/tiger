@@ -20,7 +20,7 @@ sudo mv /home/ubuntu/privkey.pem /etc/ssl/private/server.key
 sudo mv /home/ubuntu/nginx.conf /etc/nginx/sites-enabled/default
 # ASR inferencing takes lots of time. We will need to prevent Nginx time-out with the following
 # https://stackoverflow.com/a/54605177
-sudo mv /home/ubuntu/timeout.conf /etc/nginx/conf.d/timeout.conf
+sudo mv /home/ubuntu/custom.conf /etc/nginx/conf.d/custom.conf
 
 # Setup Flask
 python3 -m venv .venv
