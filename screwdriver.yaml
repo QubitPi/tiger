@@ -4,7 +4,6 @@ jobs:
     requires: [~pr, ~commit]
     template: QubitPi/ml-model-release-definition-template-mlflow-docker@latest
     steps:
-      - install-python: sd-cmd exec QubitPi/install-python@latest
       - build-ml-models: |
           cd mlflow_models/HanLPner
           python3 -m venv .venv

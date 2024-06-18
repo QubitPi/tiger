@@ -1,4 +1,4 @@
-mlflow
-mlflow-skinny
+mlflow==2.9.2
+mlflow-skinny==2.9.2
 mlflow[extras]
 hanlp[amr,fasttext,full,tf]

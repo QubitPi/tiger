@@ -24,7 +24,6 @@ python3 HanLPner.py
 A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image and run container with
 
 ```bash
-cd ../../mlflow_models/models/HanLPner
 mlflow models build-docker --name "entity-extraction"
 
 cp parser.py ../../mlflow_models/models/HanLPner/
@@ -65,21 +64,22 @@ Deployments
 -----------
 
 > [!CAUTION]
+>
 > [Screwdriver](./screwdriver.yaml) MUST NOT auto-register to Kong because container startup takes time in a scale of
 > more than 10 minutes. **We must manually register service using**:
 > 
 > ```bash
-> export THERESA_EC2_PRIVATE_IP=172.31.10.191
-> export KONG_PUBLIC_DNS=ec2-54-177-15-48.us-west-1.compute.amazonaws.com
-> export SERVICE_NAME=theresa
-> export ROUTE_NAME=analyze
+> export THERESA_EC2_PRIVATE_IP=172.31.12.154
+> export KONG_PUBLIC_DNS=ec2-52-9-19-226.us-west-1.compute.amazonaws.com
+> export SERVICE_NAME=theresa-ner
+> export ROUTE_NAME=theresa-ner
 > 
 > curl -i -s -k -X POST https://${KONG_PUBLIC_DNS}:8444/services \
 >   --data name=${SERVICE_NAME} \
 >   --data url="http://${THERESA_EC2_PRIVATE_IP}:8080/invocations"
 > 
 > curl -i -k -X POST https://${KONG_PUBLIC_DNS}:8444/services/${SERVICE_NAME}/routes \
->   --data 'paths[]=/${ROUTE_NAME}' \
+>   --data "paths[]=/${ROUTE_NAME}" \
 >   --data name=${ROUTE_NAME}
 > ```
 > 
