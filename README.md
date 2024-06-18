@@ -6,9 +6,11 @@ Theresa
 Entity Extraction
 -----------------
 
+[![AWS EC2 min size][AWS EC2 min size]](https://aws.amazon.com/ec2/instance-types/)
+
 Create virtual environment and install dependencies:
 
-```bash
+```console
 cd mlflow_models/HanLPner
 python3 -m venv .venv
 . .venv/bin/activate
@@ -17,15 +19,19 @@ pip3 install -r requirements.txt
 
 Generate Model with
 
-```bash
+```console
 python3 HanLPner.py
 ```
 
-A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image and run container with
+A model directory called "HanLPner" appears under `mlflow_models/models`. Then build Docker image
 
-```bash
+```console
 mlflow models build-docker --name "entity-extraction"
+```
 
+and run container with
+
+```console
 cp parser.py ../../mlflow_models/models/HanLPner/
 docker run --rm \
   --memory=4000m \
@@ -107,3 +113,5 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip3 install torch torchvision torchaudio
 ```
+
+[AWS EC2 min size]: https://img.shields.io/badge/EC2-%E2%89%A5t2.large-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white
