@@ -33,10 +33,12 @@ and run container with
 
 ```console
 cp parser.py ../../mlflow_models/models/HanLPner/
+export ML_MODEL_PATH=/Users/jackjack/Desktop/github/theresa/mlflow_models/models/HanLPner
+
 docker run --rm \
   --memory=4000m \
   -p 8080:8080 \
-  -v /Users/jackjack/Desktop/github/theresa/mlflow_models/models/HanLPner:/opt/ml/model \
+  -v $ML_MODEL_PATH:/opt/ml/model \
   -e PYTHONPATH="/opt/ml/model:$PYTHONPATH" \
   -e GUNICORN_CMD_ARGS="--timeout 60 -k gevent --workers=1" \
   "entity-extraction"
@@ -44,7 +46,8 @@ docker run --rm \
 
 > [!TIP]
 > If `docker.errors.DockerException: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))`
-> error is seen, refer to https://forums.docker.com/t/docker-errors-dockerexception-error-while-fetching-server-api-version-connection-aborted-filenotfounderror-2-no-such-file-or-directory-error-in-python/135637/5
+> error is seen, refer to
+> https://forums.docker.com/t/docker-errors-dockerexception-error-while-fetching-server-api-version-connection-aborted-filenotfounderror-2-no-such-file-or-directory-error-in-python/135637/5
 
 > [!WARNING]
 > The number of gunicorn worker process MUST be **1** (`--workers=1`) to prevent multiple workers from downloading a
