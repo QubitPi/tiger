@@ -1,12 +1,38 @@
 Theresa
 =======
 
-![Python Version Badge](https://img.shields.io/badge/Python-3.10-brightgreen?style=flat-square&logo=python&logoColor=white)
+![Python Version Badge][Python Version Badge]
+[![Squarespace domain badge][Squarespace domain badge]][Squarespace domain URL]
+[![Route 53 domain badge][Route 53 domain badge]][Route 53 domain URL]
+[![Kong API gateway badge][Kong API gateway badge]][Kong API gateway URL]
+
+<!-- TOC -->
+* [Theresa](#theresa)
+  * [Entity Extraction](#entity-extraction)
+    * [HanLP](#hanlp)
+      * [Running Locally](#running-locally)
+      * [Service Discovery](#service-discovery)
+  * [ASR (Automatic Speech Recognition)](#asr-automatic-speech-recognition)
+  * [ASR](#asr)
+  * [Setup](#setup)
+<!-- TOC -->
 
 Entity Extraction
 -----------------
 
+### [HanLP](https://github.com/QubitPi/HanLP)
+
 [![AWS EC2 min size][AWS EC2 min size]](https://aws.amazon.com/ec2/instance-types/)
+[![AWS EC2 instance badge][AWS EC2 instance badge]][AWS EC2 instance URL]
+[![AWS EC2 security group badge][AWS EC2 security group badge]][AWS EC2 security group URL]
+
+> [!NOTE]
+> 
+> Security Group Inbound rule:
+> 
+> - Allow TCP 8080 from `[Security Group] Theresa API Gateway`
+
+#### Running Locally
 
 Create virtual environment and install dependencies:
 
@@ -69,35 +95,34 @@ curl -X POST -H "Content-Type:application/json" \
 
 [Note the JSON schema of the `--data` value](https://stackoverflow.com/a/75104855)
 
-Deployments
------------
+#### Service Discovery
 
 > [!CAUTION]
 >
 > [Screwdriver](./screwdriver.yaml) MUST NOT auto-register to Kong because container startup takes time in a scale of
 > more than 10 minutes. **We must manually register service using**:
-> 
+>
 > ```bash
-> export THERESA_EC2_PRIVATE_IP=172.31.12.154
-> export KONG_PUBLIC_DNS=ec2-52-9-19-226.us-west-1.compute.amazonaws.com
-> export SERVICE_NAME=theresa-ner
-> export ROUTE_NAME=theresa-ner
+> export THERESA_EC2_PRIVATE_IP=172.31.10.75
+> export KONG_GATEWAY_DOMAIN=gateway.theresa-api.com
+> export SERVICE_NAME=ner
+> export ROUTE_NAME=ner
 > 
-> curl -i -s -k -X POST https://${KONG_PUBLIC_DNS}:8444/services \
+> curl -i -s -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services \
 >   --data name=${SERVICE_NAME} \
 >   --data url="http://${THERESA_EC2_PRIVATE_IP}:8080/invocations"
 > 
-> curl -i -k -X POST https://${KONG_PUBLIC_DNS}:8444/services/${SERVICE_NAME}/routes \
+> curl -i -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services/${SERVICE_NAME}/routes \
 >   --data "paths[]=/${ROUTE_NAME}" \
 >   --data name=${ROUTE_NAME}
 > ```
-> 
+>
 > Then we can test routing with
-> 
+>
 > ```bash
 > curl -k -X POST -H "Content-Type:application/json" \
 >   --data '{"dataframe_split": {"columns":["text"], "data":[["我爱中国"], ["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年  来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
->   https://${KONG_PUBLIC_DNS}/${ROUTE_NAME}
+>   https://${KONG_GATEWAY_DOMAIN}/${ROUTE_NAME}
 > ```
 
 ASR (Automatic Speech Recognition)
@@ -117,4 +142,19 @@ python3 -m venv .venv
 pip3 install torch torchvision torchaudio
 ```
 
+[AWS EC2 instance badge]: https://img.shields.io/badge/EC2-Theresa%20NER-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white
+[AWS EC2 instance URL]: https://us-west-1.console.aws.amazon.com/ec2/home?region=us-west-1#Instances:instance-state-local=running;tag:Name=Theresa%20NER;v=3;$case=tags:true%5C,client:false;$regex=tags:false%5C,client:false;sort=desc:launchTime
 [AWS EC2 min size]: https://img.shields.io/badge/EC2-%E2%89%A5t2.large-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white
+[AWS EC2 security group badge]: https://img.shields.io/badge/Security%20Group-Theresa%20NER-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white
+[AWS EC2 security group URL]: https://us-west-1.console.aws.amazon.com/ec2/home?region=us-west-1#SecurityGroups:v=3;group-name=Theresa%20NER
+
+[Kong API gateway badge]: https://img.shields.io/badge/API%20gateway%20runbook-003459?style=for-the-badge&logo=kong&logoColor=white
+[Kong API gateway URL]: https://github.com/QubitPi/hashicorp-aws-runbooks/tree/master/QubitPi/theresa/gateway.theresa.com
+
+[Route 53 domain badge]: https://img.shields.io/badge/theresa--api.com-8C4FFF?style=for-the-badge&logo=amazonroute53&logoColor=white
+[Route 53 domain URL]: https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones#ListRecordSets/Z040493321941ZNYZFFDP
+
+[Squarespace domain badge]: https://img.shields.io/badge/theresa--api.com-000000?style=for-the-badge&logo=squarespace&logoColor=white
+[Squarespace domain URL]: https://account.squarespace.com/domains/managed/theresa-api.com
+
+[Python Version Badge]: https://img.shields.io/badge/Python-3.10-brightgreen?style=for-the-badge&logo=python&logoColor=white
