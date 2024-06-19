@@ -112,8 +112,8 @@ Manually register service:
 ```bash
 export THERESA_EC2_PRIVATE_IP=172.31.10.75
 export KONG_GATEWAY_DOMAIN=gateway.theresa-api.com
-export SERVICE_NAME=ner
-export ROUTE_NAME=ner
+export SERVICE_NAME=graphgpt
+export ROUTE_NAME=graphgpt
 
 curl -i -s -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services \
   --data name=${SERVICE_NAME} \
