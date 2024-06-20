@@ -1,7 +1,63 @@
 ---
+annotations:
+  screwdriver.cd/chainPR: false
+
 jobs:
-  main:
+  graphgpt-unit-tests:
     requires: [~pr, ~commit]
+    image: buildpack-deps:22.04-scm
+    steps:
+      - install-python: sd-cmd exec QubitPi/install-python-310@latest
+      - install-dependencies: pip3 install -r mlflow_models/HanLPner/requirements.txt
+      - run-tests: python3 -m unittest mlflow_models/HanLPner/test_parser.py
+
+  asr-unit-tests:
+    requires: [~pr, ~commit]
+    image: buildpack-deps:22.04-scm
+    steps:
+      - install-python: sd-cmd exec QubitPi/install-python-310@latest
+      - install-dependencies: pip3 install -r test_models/asr/requirements.txt
+      - run-tests: python3 -m unittest test_models/asr/test__init__.py
+
+#  asr-integration-tests:
+#    requires: [~pr, ~commit]
+#    image: buildpack-deps:22.04-scm
+#    steps:
+#      - install-python: sd-cmd exec QubitPi/install-python-310@latest
+#      - install-node: sd-cmd exec QubitPi/install-node@latest
+#      - install-dependencies: pip3 install -r test_models/asr/requirements.txt
+#      - start-server: |
+#          cd test_models
+#          touch asr/theresa.log
+#          gunicorn \
+#            -w 4 \
+#            -b 0.0.0.0 \
+#            --timeout 600 \
+#            --limit-request-line 0 \
+#            --log-file asr/theresa.log \
+#            --log-level DEBUG \
+#            'asr:create_app()' &
+#          cd ../
+#      - wait-until-server-is-up: |
+#          npm install -g wait-on
+#          wait-on http://0.0.0.0:8000/healthcheck
+#      - tests-model-1: |
+#          if "curl -v --location 'localhost:8000/model1' --form 'audio=@\".github/audios/test.mp3\"'"; then
+#            exit 0
+#          else
+#            cat test_models/asr/theresa.log
+#            exit 1
+#          fi
+#      - tests-model-2: |
+#          if "curl -v --location 'localhost:8000/model2' --form 'audio=@\".github/audios/test.wav\"'"; then
+#            exit 0
+#          else
+#            cat test_models/asr/theresa.log
+#            exit 1
+#          fi
+
+  deploy-graphgpt:
+    requires: [graphgpt-unit-tests]
     template: QubitPi/ml-model-release-definition-template-mlflow-docker@latest
     steps:
       - build-ml-models: |
