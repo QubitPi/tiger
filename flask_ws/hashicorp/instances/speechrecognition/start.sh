@@ -2,8 +2,8 @@
 set -x
 set -e
 
-touch /home/ubuntu/asr/theresa.log
-export THERESA_LOG=/home/ubuntu/asr/theresa.log
+touch /home/ubuntu/speechrecognition/theresa.log
+export THERESA_LOG=/home/ubuntu/speechrecognition/theresa.log
 echo "Flask server starting..."  >>$THERESA_LOG 2>&1
 
 cd /home/ubuntu
@@ -17,6 +17,6 @@ gunicorn \
   -b 0.0.0.0 \
   --timeout 600 \
   --limit-request-line 0 \
-  --log-file asr/theresa.log \
+  --log-file speechrecognition/theresa.log \
   --log-level DEBUG \
-  'asr:create_app()'
+  'speechrecognition:create_app()'

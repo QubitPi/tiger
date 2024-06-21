@@ -3,7 +3,7 @@ import unittest
 
 from . import random_filename
 
-class TestASR(unittest.TestCase):
+class TestSpeechRecognition(unittest.TestCase):
 
     def test_same_file_has_different_random_name_at_different_times(self):
         first = random_filename("foo.mp3")

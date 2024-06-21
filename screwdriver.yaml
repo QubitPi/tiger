@@ -11,13 +11,13 @@ jobs:
       - install-dependencies: pip3 install -r mlflow_models/HanLPner/requirements.txt
       - run-tests: python3 -m unittest mlflow_models/HanLPner/test_parser.py
 
-  asr-unit-tests:
+  speech-recognition-flask-unit-tests:
     requires: [~pr, ~commit]
     image: buildpack-deps:22.04-scm
     steps:
       - install-python: sd-cmd exec QubitPi/install-python-310@latest
-      - install-dependencies: pip3 install -r test_models/asr/requirements.txt
-      - run-tests: python3 -m unittest test_models/asr/test__init__.py
+      - install-dependencies: pip3 install -r flask_ws/speechrecognition/requirements.txt
+      - run-tests: python3 -m unittest flask_ws/speechrecognition/test__init__.py
 
 #  asr-integration-tests:
 #    requires: [~pr, ~commit]
@@ -56,23 +56,23 @@ jobs:
 #            exit 1
 #          fi
 
-  deploy-graphgpt:
-    requires: [graphgpt-unit-tests]
-    template: QubitPi/ml-model-release-definition-template-mlflow-docker@latest
-    steps:
-      - build-ml-models: |
-          cd mlflow_models/HanLPner
-          python3 -m venv .venv
-          . .venv/bin/activate
-          pip3 install -r requirements.txt
-
-          python3 HanLPner.py
-          cd ../../
-
-          cp mlflow_models/HanLPner/parser.py mlflow_models/models/HanLPner/
-          echo "8080" > mlflow_models/models/HanLPner/PORT
-    secrets:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_ML_PKRVARS_HCL
-      - AWS_ML_TFVARS
+#  deploy-graphgpt:
+#    requires: [graphgpt-unit-tests]
+#    template: QubitPi/ml-model-release-definition-template-mlflow-docker@latest
+#    steps:
+#      - build-ml-models: |
+#          cd mlflow_models/HanLPner
+#          python3 -m venv .venv
+#          . .venv/bin/activate
+#          pip3 install -r requirements.txt
+#
+#          python3 HanLPner.py
+#          cd ../../
+#
+#          cp mlflow_models/HanLPner/parser.py mlflow_models/models/HanLPner/
+#          echo "8080" > mlflow_models/models/HanLPner/PORT
+#    secrets:
+#      - AWS_ACCESS_KEY_ID
+#      - AWS_SECRET_ACCESS_KEY
+#      - AWS_ML_PKRVARS_HCL
+#      - AWS_ML_TFVARS
