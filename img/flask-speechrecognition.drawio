@@ -1,0 +1,51 @@
+<mxfile host="app.diagrams.net" modified="2024-06-21T02:23:26.359Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="B7_qUqZuTyE10VGVgc5i" version="24.5.4" type="device">
+  <diagram name="Page-1" id="auK2NtHcuQ-zKYflDZFF">
+    <mxGraphModel dx="864" dy="478" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="10eZMGoddtBmQLF8yXU9-13" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#D86613;strokeWidth=2;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="610" y="290" width="360" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" parent="1" source="10eZMGoddtBmQLF8yXU9-24" target="10eZMGoddtBmQLF8yXU9-27" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-24" value="openai/whisper" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo-with-title.png;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="550.95" y="120" width="188.09" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-26" value="Use via API" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="770" y="230" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-27" value="QubitPi/whisper" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo-with-title.png;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="880.95" y="120" width="188.09" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-29" value="backup" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="730.95" y="110" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.883;entryY=1.011;entryDx=0;entryDy=0;strokeWidth=2;curved=1;entryPerimeter=0;" parent="1" source="10eZMGoddtBmQLF8yXU9-35" target="10eZMGoddtBmQLF8yXU9-24" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="360" />
+              <mxPoint x="770" y="171" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQbazVtEMaViz6x6VGra-1" value="&lt;font face=&quot;Ubuntu&quot; style=&quot;font-size: 11px;&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;&quot;&gt;SpeechRecognition&lt;/b&gt;&lt;/font&gt;&lt;div style=&quot;font-size: 11px;&quot;&gt;&lt;font face=&quot;Ubuntu&quot; style=&quot;font-size: 11px;&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;&quot;&gt;Python Lib (whisper)&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#0273B7;" parent="1" vertex="1">
+          <mxGeometry x="750" y="390" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-14" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://miro.medium.com/v2/resize:fit:600/1*W02WEmR0_JeJXfLWN2zHwQ.png;fontStyle=1;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="880" y="333.5" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-15" value="EC2 instance" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=1;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_ec2_instance_contents;strokeColor=#D86613;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#D86613;dashed=0;strokeWidth=2;fontFamily=Ubuntu;" parent="1" vertex="1">
+          <mxGeometry x="640" y="302.5" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="SQbazVtEMaViz6x6VGra-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;strokeWidth=2;" parent="1" source="10eZMGoddtBmQLF8yXU9-35" target="SQbazVtEMaViz6x6VGra-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10eZMGoddtBmQLF8yXU9-35" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://repository-images.githubusercontent.com/596892/cc2c69ec-9251-4b33-8283-b86a8659c9cb;" parent="1" vertex="1">
+          <mxGeometry x="665" y="340" width="80" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

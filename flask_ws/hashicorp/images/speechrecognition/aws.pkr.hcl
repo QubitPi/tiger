@@ -7,8 +7,8 @@ packer {
   }
 }
 
-source "amazon-ebs" "theresa-test-model-asr" {
-  ami_name = "theresa-test-model-asr"
+source "amazon-ebs" "theresa-speech-recognition-flask" {
+  ami_name = "theresa-speech-recognition-flask"
   force_deregister = "true"
   force_delete_snapshot = "true"
 
@@ -34,40 +34,19 @@ source "amazon-ebs" "theresa-test-model-asr" {
 }
 
 build {
-  name = "install-theresa-test-model-asr"
   sources = [
-    "source.amazon-ebs.theresa-test-model-asr"
+    "source.amazon-ebs.theresa-speech-recognition-flask"
   ]
-
-  # Load SSL Certificates into AMI image
-  provisioner "file" {
-    source = "fullchain.pem"
-    destination = "/home/ubuntu/fullchain.pem"
-  }
-  provisioner "file" {
-    source = "privkey.pem"
-    destination = "/home/ubuntu/privkey.pem"
-  }
-
-  # Load Nginx config files into AMI image
-  provisioner "file" {
-    source = "nginx.conf"
-    destination = "/home/ubuntu/nginx.conf"
-  }
-  provisioner "file" {
-    source = "custom.conf"
-    destination = "/home/ubuntu/custom.conf"
-  }
 
   # Load flask app into AMI image
   provisioner "shell" {
     inline = [
-      "mkdir -p /home/ubuntu/asr/"
+      "mkdir -p /home/ubuntu/speechrecognition/"
     ]
   }
   provisioner "file" {
-    source = "../../../test_models/asr/"
-    destination = "/home/ubuntu/asr/"
+    source = "../../../speechrecognition/"
+    destination = "/home/ubuntu/speechrecognition/"
   }
 
   provisioner "shell" {

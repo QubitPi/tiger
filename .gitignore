@@ -16,3 +16,5 @@ build/
 *~
 mlflow_models/models/
 theresa.log
+.terraform*
+terraform.tfstate*

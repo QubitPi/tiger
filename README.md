@@ -7,10 +7,6 @@ Theresa
 [![Kong API gateway badge][Kong API gateway badge]][Kong API gateway URL]
 [![Screwdriver pipeline badge][Screwdriver pipeline badge]][Screwdriver pipeline URL]
 
-> [!NOTE]
-> 
-> To avoid triggering Screwdriver automatically, add `[skip ci]` in commit message
-
 <!-- TOC -->
 * [Theresa](#theresa)
   * [Entity Extraction](#entity-extraction)

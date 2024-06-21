@@ -9,40 +9,6 @@ from flask_cors import CORS
 
 import os
 
-def __inference_by_whisper_space(audio_path):
-    """
-    Inferencing using https://huggingface.co/spaces/openai/whisper.
-
-    supports wider variety of audio file types, including .wav, and .mp3
-
-    :param audio_path:  The local audio file path to transcribe
-
-    :return: The transcribed audio text in string
-    """
-    from gradio_client import Client
-
-    client = Client("https://openai-whisper.hf.space/")
-    return client.predict(audio_path, "transcribe", api_name="/predict")
-
-def __inference_by_speech_recognition(audio_path):
-    """
-    Inferencing using https://github.com/Uberi/speech_recognition
-
-    Supports inferencing beyond whisper, but audio file type is more restricted - support .wav but not .mp3
-
-    :param audio_path:  The local audio file path to transcribe
-
-    :return: The transcribed audio text in string
-    """
-    import speech_recognition as sr
-
-    r = sr.Recognizer()
-
-    with sr.AudioFile(audio_path) as source:
-        audio = r.record(source)
-
-    return r.recognize_whisper(audio_data=audio, language="zh")
-
 
 def random_filename(original_filename: str):
     return str(hash((original_filename, time.time())))
@@ -82,7 +48,7 @@ def create_app():
     app.logger.setLevel(logging.DEBUG)
 
     app.config['SWAGGER'] = {
-        'title': 'Paion Data ASR Test API',
+        'title': 'Theresa Speech Recognition Flask',
         'openapi': '3.0.2'
     }
     Swagger(app)
@@ -91,32 +57,13 @@ def create_app():
     def hello():
         return "Success", 200
 
-    @app.route("/model1", methods=["POST"])
+    @app.route("/whisperHuggingFaceSpace", methods=["POST"])
     @with_uploaded_file
-    def model1(**kwargs):
+    def inference_by_whisper_huggingface_space(**kwargs):
         """
-        使用 1 号基础模型将一段音频转译成文字格式。
-        ---
-        requestBody:
-          content:
-            multipart/form-data:
-              schema:
-                type: object
-                properties:
-                  audio:
-                    type: string
-                    format: binary
-        responses:
-          200:
-            description: Success
-        """
-        return __inference_by_whisper_space(kwargs["audio_path"])
+        Inferencing using https://huggingface.co/spaces/openai/whisper.
 
-    @app.route("/model2", methods=["POST"])
-    @with_uploaded_file
-    def model2(**kwargs):
-        """
-        使用 2 号基础模型将一段音频转译成文字格式。
+        supports wider variety of audio file types, including .wav, and .mp3
         ---
         requestBody:
           content:
@@ -131,6 +78,39 @@ def create_app():
           200:
             description: Success
         """
-        return __inference_by_speech_recognition(kwargs["audio_path"])
+        from gradio_client import Client
+
+        client = Client("https://openai-whisper.hf.space/")
+        return client.predict(kwargs["audio_path"], "transcribe", api_name="/predict")
+
+    @app.route("/speechrecognitionLibrary", methods=["POST"])
+    @with_uploaded_file
+    def inference_by_speechrecognition_library(**kwargs):
+        """
+        Inferencing using https://github.com/Uberi/speech_recognition
+
+        Supports inferencing beyond whisper, but audio file type is more restricted - support .wav but not .mp3
+        ---
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  audio:
+                    type: string
+                    format: binary
+        responses:
+          200:
+            description: Success
+        """
+        import speech_recognition as sr
+
+        r = sr.Recognizer()
+
+        with sr.AudioFile(kwargs["audio_path"]) as source:
+            audio = r.record(source)
+
+        return r.recognize_whisper(audio_data=audio, language="zh")
 
     return app
