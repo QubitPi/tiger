@@ -10,6 +10,8 @@ Theresa
 - [GraphGPT](./mlflow_models/HanLPner)
 - [Speech Recognition](./flask_ws/speechrecognition)
 
+  - (TODO) [Fine-tunning Wisper](https://stackoverflow.com/questions/73841388/how-can-i-finetune-a-model-from-openais-whisper-asr-on-my-own-training-data)
+
 [Kong API gateway badge]: https://img.shields.io/badge/API%20gateway%20runbook-003459?style=for-the-badge&logo=kong&logoColor=white
 [Kong API gateway URL]: https://github.com/QubitPi/hashicorp-aws-runbooks/tree/master/QubitPi/theresa/gateway.theresa.com
 

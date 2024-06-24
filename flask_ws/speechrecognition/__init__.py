@@ -6,9 +6,16 @@ from flasgger import Swagger
 from flask import Flask
 from flask import request
 from flask_cors import CORS
+from flask import Request
 
 import os
 
+# https://stackoverflow.com/a/77964479
+# This is actually not needed, but in case gunicorn can't take a large file, this becomes handy
+class CustomRequest(Request):
+    def __init__(self, *args, **kwargs):
+        super(CustomRequest, self).__init__(*args, **kwargs)
+        self.max_form_parts = 999999
 
 def random_filename(original_filename: str):
     return str(hash((original_filename, time.time())))
@@ -40,6 +47,7 @@ def with_uploaded_file(f):
 
 def create_app():
     app = Flask(__name__)
+    app.request_class = CustomRequest
 
     CORS(app)
 
