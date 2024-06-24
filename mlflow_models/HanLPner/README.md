@@ -99,7 +99,7 @@ curl -i -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services/${SERVICE_NAME}/
   --data name=${ROUTE_NAME}
 ```
 
-Then we can test routing with
+We should see `HTTP/1.1 201 Created` as a sign of success. Then we can test routing with
 
 ```bash
 curl -k -X POST -H "Content-Type:application/json" \
