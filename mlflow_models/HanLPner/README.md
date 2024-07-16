@@ -75,38 +75,6 @@ curl -X POST -H "Content-Type:application/json" \
 
 [Note the JSON schema of the `--data` value](https://stackoverflow.com/a/75104855)
 
-### Service Discovery
-
-> [!CAUTION]
->
-> Docker container startup takes time in a scale of more than 10 minutes for installing dependencies and downloading
-> models.
-
-Manually register service:
-
-```bash
-export THERESA_EC2_PRIVATE_IP=172.31.10.75
-export KONG_GATEWAY_DOMAIN=gateway.theresa-api.com
-export SERVICE_NAME=graphgpt
-export ROUTE_NAME=graphgpt
-
-curl -i -s -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services \
-  --data name=${SERVICE_NAME} \
-  --data url="http://${THERESA_EC2_PRIVATE_IP}:8080/invocations"
-
-curl -i -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services/${SERVICE_NAME}/routes \
-  --data "paths[]=/${ROUTE_NAME}" \
-  --data name=${ROUTE_NAME}
-```
-
-We should see `HTTP/1.1 201 Created` as a sign of success. Then we can test routing with
-
-```bash
-curl -k -X POST -H "Content-Type:application/json" \
-  --data '{"dataframe_split": {"columns":["text"], "data":[["我爱中国"], ["米哈游成立于2011年,致力于为用户提供美好的、超出预期的产品与内容。米哈游多年  来秉持技术自主创新,坚持走原创精品之路,围绕原创IP打造了涵盖漫画、动画、游戏、音乐、小说及动漫周边的全产业链。"]]}}' \
-  https://${KONG_GATEWAY_DOMAIN}/${ROUTE_NAME}
-```
-
 [AWS EC2 instance badge]: https://img.shields.io/badge/EC2-Theresa%20NER-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white
 [AWS EC2 instance URL]: https://us-west-1.console.aws.amazon.com/ec2/home?region=us-west-1#Instances:instance-state-local=running;tag:Name=Theresa%20NER;v=3;$case=tags:true%5C,client:false;$regex=tags:false%5C,client:false;sort=desc:launchTime
 [AWS EC2 min size]: https://img.shields.io/badge/EC2-%E2%89%A5t2.large-FF9902?style=for-the-badge&logo=amazonec2&logoColor=white

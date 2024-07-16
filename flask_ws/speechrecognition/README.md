@@ -44,9 +44,10 @@ gunicorn \
 
 > [!TIP]
 >
-> This curl was generated from Postman. It's very helpful to
+> - This curl was generated from Postman. It's very helpful to
 > [make it work on Postman](https://galaxyofai.com/how-to-send-audio-files-to-flask-api-using-postman/) and have it
 > generate curl for us
+> - [Test audio download](https://www.kaggle.com/datasets/pavanelisetty/sample-audio-files-for-speech-recognition)
 
 ```console
 curl --location 'localhost:8000/whisperHuggingFaceSpace' --form 'audio=@"/abs/path/to/test.wav"'
@@ -62,8 +63,9 @@ Deployment (Manual)
 > [!WARNING]
 > 
 > - The accumulating logs will eventually fill up disk space on EC2!
-> - If this Flask service is behind a proxy like Nginx, we must put a `custom.conf` under
->   __/etc/nginx/conf.d/custom.conf__ to
+> - This Flask service already uses [`CustomRequest`](./__init__.py) to handle large audio file upload, 
+> - if this Flask service is, however, behind a proxy like Nginx, we must put a `custom.conf` under
+>   __/etc/nginx/conf.d/custom.conf__ in order to
 > 
 >   1. [Allow longer transcription time](https://stackoverflow.com/a/54605177)
 >   2. Allow big upload audio file
@@ -98,35 +100,7 @@ terraform apply -auto-approve
 
 > [!TIP]
 >
-> Healthcheck: http://18.144.28.224:8000/healthcheck
-> API Docs: http://18.144.28.224:8000/apidocs/
-
-### Service Discovery
-
-Manually register service:
-
-```bash
-export THERESA_EC2_PRIVATE_IP=172.31.7.136
-export KONG_GATEWAY_DOMAIN=gateway.theresa-api.com
-export SERVICE_NAME=speechrecognition-model1
-export ROUTE_NAME=speechrecognition-model1
-
-curl -i -s -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services \
-  --data name=${SERVICE_NAME} \
-  --data url="http://${THERESA_EC2_PRIVATE_IP}:8000/whisperHuggingFaceSpace"
-
-curl -i -k -X POST https://${KONG_GATEWAY_DOMAIN}:8444/services/${SERVICE_NAME}/routes \
-  --data "paths[]=/${ROUTE_NAME}" \
-  --data name=${ROUTE_NAME}
-```
-
-We should see `HTTP/1.1 201 Created` as a sign of success. Then we can test routing with
-
-```console
-curl -k -X POST \
-  --form 'audio=@"/Users/jackjack/Desktop/test-audio.wav"' \
-  https://${KONG_GATEWAY_DOMAIN}/${ROUTE_NAME}
-```
+> [Test audio download](https://www.kaggle.com/datasets/pavanelisetty/sample-audio-files-for-speech-recognition)
 
 ### Nginx (If SSL is needed)
 
