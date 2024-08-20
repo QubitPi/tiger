@@ -1,7 +1,6 @@
 - Inspired by https://www.reddit.com/r/AncientGreek/comments/18ik2dt/text_to_speech_with_openai/
-- [Full text of Xenophon's Oeconomicus](https://archive.org/details/XenophonMemorabiliaOeconomicusSymosiumloebMarchant_201903)
 
-1. Get a accturate txt
+1. Get a accurate txt
 
    - `python3 convert.py`
 
