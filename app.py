@@ -44,7 +44,7 @@ with col2:
     ###### ➠ If you want to translate the subtitles to English, select the task as "Translate" 
     ###### I recommend starting with the base model and then experimenting with the larger models, the small and medium models often work well. """)
 
-
+@st.cache_resource
 def change_model(current_size, size):
     if current_size != size:
         loaded_model = whisper.load_model(size)
