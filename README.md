@@ -34,7 +34,7 @@ Paraphrasing movie lines has been my favorite approach to learn a foreign langua
 close-native English in early days. I used this same tactic for German today as well.
 
 One morning I was studying German with the famous German WW2 movie
-[_Generation War_](https://youtu.be/TmyGPX23px4?si=wk3V62vLUe9zFzfo). Managing to find its subtitles[^1][^2][^3] were
+[_Generation War_](https://youtu.be/KbioAaRnR2I?si=USPD5pI8MVgcr5pD). Managing to find its subtitles[^1][^2][^3] were
 easy for me. A problem, however, soon arose as I proceeded with them: _the subtitles had errors - missing couple of
 phrases every few other lines_. This was a big NO for language learners like me. In old days 10 years ago, I would've
 reached a dead end... 
