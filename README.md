@@ -37,7 +37,7 @@ One morning I was studying German with the famous German WW2 movie
 [_Generation War_](https://youtu.be/8s_0QteDapc?si=usMdIbY5Skfz0u1q). Managing to find its subtitles[^1][^2][^3] were
 easy for me. A problem, however, soon arose as I proceeded with them: _the subtitles had errors - missing couple of
 phrases every few other lines_. This was a big NO for language learners like me. In old days 10 years ago, I would've
-reached a dead end... 
+reached a dead end...
 
 [^1]: https://www.opensubtitles.org/en/subtitles/6243166/generation-war-eine-andere-zeit-de
 [^2]: https://www.opensubtitles.org/en/subtitles/6243167/generation-war-ein-anderer-krieg-de
@@ -51,22 +51,27 @@ Being so excited, I decided to industrialize this process and hereby present it 
 __AI movie transcription service that targets specifically for language learners__
 
 > [!NOTE]
-> 
+>
 > On name "__Tiger__"
 >
 > The project name _tiger_ was taken from the _German heavy tank of World War II -
 > [Tiger I](https://tanks-encyclopedia.com/ww2/germany/panzer-vi_tiger.php#index17)_.
-> 
+>
 > I chose this name because the project idea was spawned from the study of German language. More importantly, _Tiger I_
-> has been widely recognized as a revolutionary tank being a crown jewels in the history of warfare technology: 
-> 
+> has been widely recognized as a revolutionary tank being a crown jewels in the history of warfare technology:
+>
 > > _"It is tempting to view the appearance of the Tiger tank as revolutionary, ... the end result was a machine that
 > > represented a quantum leap forward in tank design and changed everything - forever"_[^4]
-> 
+>
 > As _Tiger_ had steered the direction of next-generation heavy tank, this project has also revolutionized my view
 > toward AI subconsciously and serves as an empirical guide on how I should make NLP more powerful for people with AI.
 
 [^4]: _[Tiger tank : Panzerkampfwagen VI Tiger I Ausf. E (SdKfz 181): owner's workshop manual](https://a.co/d/28OzPsK)_, The Tank Museum, 2011. p.13
+
+License
+-------
+
+The use and distribution terms for [tiger]() are covered by the [Apache License, Version 2.0].
 
 [Apache License Badge]: https://img.shields.io/badge/Apache%202.0-F25910.svg?style=for-the-badge&logo=Apache&logoColor=white
 [Apache License, Version 2.0]: https://www.apache.org/licenses/LICENSE-2.0
