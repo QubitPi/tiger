@@ -22,7 +22,7 @@ __Tiger__ is an automatic speech recognition application that takes a video file
 subtitles as well as downloadable .txt, .vtt, .srt transcription files. Tiger generates transcriptions using the
 [OpenAI Whisper](https://openai.com/blog/whisper) models.
 
-The app is available on [Hugging Face space][Project Tiger on Hugging Face]. Please check it out.
+The app is available on [🤗 Hugging Face space][Project Tiger on Hugging Face]. Please check it out.
 
 How Project Tiger Started
 -------------------------
